@@ -3,6 +3,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Box, CardActionArea, Grid } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 
 export default function FrontPage() {
@@ -13,7 +14,7 @@ export default function FrontPage() {
                 <Grid container justifyContent="center">
                     <Grid item xs={4}>
                         <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea>
+                            <CardActionArea component={Link} to="/wiki">
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Wikisider
@@ -27,7 +28,7 @@ export default function FrontPage() {
                     </Grid>
                     <Grid item xs={4}>
                         <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea>
+                            <CardActionArea component={Link} to="/lagoppgave">
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Lag en oppgave
@@ -42,7 +43,7 @@ export default function FrontPage() {
                     </Grid>
                     <Grid item xs={4}>
                         <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea>
+                            <CardActionArea component={Link} to="/seoppgaver">
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Søk i oppgaver
