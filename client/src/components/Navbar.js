@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { Link } from 'react-router-dom';
 
 export default function Navbar() {
     return (
@@ -26,7 +27,7 @@ export default function Navbar() {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         MusiCT
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    <Button color="inherit" component={Link} to="/innlogging">Logg inn</Button>
                 </Toolbar>
             </AppBar>
         </Box>

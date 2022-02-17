@@ -6,6 +6,7 @@ import Wiki from './pages/Wiki';
 import TaskCreate from './pages/TaskCreate';
 import TaskBrowse from './pages/TaskBrowse';
 import { createTheme, ThemeProvider } from '@mui/material';
+import LoginRegister from './pages/LoginRegister';
 
 const theme = createTheme({
   palette: {
@@ -39,6 +40,7 @@ ReactDOM.render(
         <Route path="wiki" element={<Wiki />} />
         <Route path="lagoppgave" element={<TaskCreate />} />
         <Route path="seoppgaver" element={<TaskBrowse />} />
+        <Route path="innlogging" element={<LoginRegister />} />
       </Routes>
     </ThemeProvider>
   </BrowserRouter>,
