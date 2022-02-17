@@ -1,6 +1,6 @@
 import './App.css';
 import * as React from 'react';
-import FrontPage from './FrontPage';
+import FrontPage from './pages/FrontPage';
 
 function App() {
   return (

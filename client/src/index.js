@@ -2,9 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Wiki from './Wiki';
-import TaskCreate from './TaskCreate';
-import TaskBrowse from './TaskBrowse';
+import Wiki from './pages/Wiki';
+import TaskCreate from './pages/TaskCreate';
+import TaskBrowse from './pages/TaskBrowse';
 import { createTheme, ThemeProvider } from '@mui/material';
 
 const theme = createTheme({

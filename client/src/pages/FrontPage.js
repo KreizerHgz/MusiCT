@@ -4,12 +4,13 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Box, CardActionArea, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 
 export default function FrontPage() {
     return (
         <Box height={"100vh"}>
-            <Typography variant="h1" component="div" gutterBottom color='text.primary'>MusiCT</Typography>
+            <Navbar />
             <Grid container spacing={0}>
                 <Grid container justifyContent="center">
                     <Grid item xs={4}>
