@@ -22,17 +22,8 @@ export default function Navbar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color=''>
                 <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
-
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" sx={{ flexGrow: 1 }} component={Link} to="/" style={{ textDecoration: 'none', color: 'unset' }}>
+                    <Button disabled></Button>
+                    <Typography variant="h4" sx={{ flexGrow: 1 }} component={Link} to="/" style={{ textDecoration: 'none', color: 'unset' }}>
                         MusiCT
                     </Typography>
                     {value === true ? (<Button color="inherit" onClick={logout} component={Link} to="/">Logg ut</Button>
