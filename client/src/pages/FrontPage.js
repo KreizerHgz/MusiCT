@@ -10,7 +10,7 @@ import { UserContext } from '../UserContext';
 
 export default function FrontPage() {
 
-    const { value, setValue } = React.useContext(UserContext);
+    const { value } = React.useContext(UserContext);
 
     return (
         <Box height={"100vh"}>
