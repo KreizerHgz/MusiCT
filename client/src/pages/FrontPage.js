@@ -18,8 +18,8 @@ export default function FrontPage() {
             <Grid container spacing={0}>
                 <Grid container justifyContent="center">
                     <Grid item xs={4}>
-                        <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea component={Link} to="/wiki">
+                        <Card sx={{ margin: "20px", marginTop: "150px", height: "200px" }}>
+                            <CardActionArea component={Link} to="/wiki" sx={{ height: "200px" }} >
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Wikisider
@@ -32,8 +32,8 @@ export default function FrontPage() {
                         </Card>
                     </Grid>
                     <Grid item xs={4}>
-                        <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea component={Link} to="/lagoppgave" disabled={!value}>
+                        <Card sx={{ margin: "20px", marginTop: "150px", height: "200px" }}>
+                            <CardActionArea component={Link} to="/lagoppgave" disabled={!value} sx={{ height: "200px" }} >
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Lag en oppgave
@@ -52,8 +52,8 @@ export default function FrontPage() {
                         </Card>
                     </Grid>
                     <Grid item xs={4}>
-                        <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea component={Link} to="/seoppgaver">
+                        <Card sx={{ margin: "20px", marginTop: "150px", height: "200px" }}>
+                            <CardActionArea component={Link} to="/seoppgaver" sx={{ height: "200px" }}>
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Søk i oppgaver
@@ -66,7 +66,7 @@ export default function FrontPage() {
                         </Card>
                     </Grid>
                 </Grid>
-            </Grid>
-        </Box>
+            </Grid >
+        </Box >
     );
 }
