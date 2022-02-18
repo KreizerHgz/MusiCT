@@ -35,7 +35,7 @@ const theme = createTheme({
 
 function App() {
 
-  const [value, setValue] = useState('Context');
+  const [value, setValue] = useState(false);
 
   return (
     <div className="App">

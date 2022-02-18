@@ -33,7 +33,7 @@ export default function FrontPage() {
                     </Grid>
                     <Grid item xs={4}>
                         <Card sx={{ margin: "20px", marginTop: "150px", height: "200px" }}>
-                            <CardActionArea component={Link} to="/lagoppgave" disabled={!value} sx={{ height: "200px" }} >
+                            <CardActionArea component={Link} to="/lagoppgave" disabled={!(value)} sx={{ height: "200px" }} >
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Lag en oppgave
