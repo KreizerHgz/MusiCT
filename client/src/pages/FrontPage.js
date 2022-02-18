@@ -5,9 +5,13 @@ import Typography from '@mui/material/Typography';
 import { Box, CardActionArea, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import { UserContext } from '../UserContext';
 
 
 export default function FrontPage() {
+
+    const { value, setValue } = React.useContext(UserContext);
+
     return (
         <Box height={"100vh"}>
             <Navbar />
@@ -29,15 +33,20 @@ export default function FrontPage() {
                     </Grid>
                     <Grid item xs={4}>
                         <Card sx={{ margin: "20px", marginTop: "150px" }}>
-                            <CardActionArea component={Link} to="/lagoppgave">
+                            <CardActionArea component={Link} to="/lagoppgave" disabled={!value}>
                                 <CardContent>
                                     <Typography gutterBottom variant="h3" component="div">
                                         Lag en oppgave
                                     </Typography>
-                                    <Typography variant="body2" color="text.secondary">
+                                    {value === true ? (<Typography variant="body2" color="text.secondary">
                                         Her kan du lage en oppgave til bruk i undervisningen som passer deg og din klasse gjennom vår mal-baserte
                                         oppgavebygger
                                     </Typography>
+                                    ) : (
+                                        <Typography variant="body2" color="text.secondary">
+                                            For å bruke oppgavebyggeren må du logge deg inn
+                                        </Typography>
+                                    )}
                                 </CardContent>
                             </CardActionArea>
                         </Card>
