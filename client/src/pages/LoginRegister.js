@@ -1,5 +1,5 @@
 import '../App.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import Axios from 'axios';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -7,6 +7,7 @@ import { Button, Stack, TextField } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Navbar from '../components/Navbar';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from '../UserContext';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -19,13 +20,16 @@ const CssTextField = styled(TextField)({
 
 export default function LoginRegister() {
 
-    const [usernameReg, setUsernameReg] = useState('')
-    const [passwordReg, setPasswordReg] = useState('')
+    const [usernameReg, setUsernameReg] = useState('');
+    const [passwordReg, setPasswordReg] = useState('');
 
-    const [username, setUsername] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
 
-    const [loginStatus, setLoginStatus] = useState('')
+    const [loginStatus, setLoginStatus] = useState('');
+
+    const { value, setValue } = useContext(UserContext);
+
 
     const register = () => {
         Axios.post('http://localhost:3001/register', { username: usernameReg, password: passwordReg }).then((response) => {
@@ -38,8 +42,8 @@ export default function LoginRegister() {
             if (response.data.message) {
                 setLoginStatus(response.data.message);
             } else {
+                setValue(true);
                 setLoginStatus(response.data[0].Username);
-                this.props.history.push('/')
             }
             console.log(response.data);
             console.log(loginStatus);

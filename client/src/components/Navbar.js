@@ -8,8 +8,16 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../UserContext';
 
 export default function Navbar() {
+
+    const { value, setValue } = React.useContext(UserContext);
+
+    const logout = () => {
+        setValue(false);
+    }
+
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color=''>
@@ -24,10 +32,12 @@ export default function Navbar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" sx={{ flexGrow: 1 }} component={Link} to="/" style={{ textDecoration: 'none', color: 'unset' }}>
                         MusiCT
                     </Typography>
-                    <Button color="inherit" component={Link} to="/innlogging">Logg inn</Button>
+                    {value === true ? (<Button color="inherit" onClick={logout} component={Link} to="/">Logg ut</Button>
+                    ) : (
+                        <Button color="inherit" component={Link} to="/innlogging">Logg inn</Button>)}
                 </Toolbar>
             </AppBar>
         </Box>
