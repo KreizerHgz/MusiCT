@@ -26,8 +26,6 @@ export default function LoginRegister() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
-    const [loginStatus, setLoginStatus] = useState('');
-
     const { value, setValue } = useContext(UserContext);
 
 
@@ -40,27 +38,22 @@ export default function LoginRegister() {
     const login = () => {
         Axios.post('http://localhost:3001/login', { username: username, password: password }).then((response) => {
             if (response.data.message) {
-                setLoginStatus(response.data.message);
             } else {
                 setValue(true);
-                setLoginStatus(response.data[0].Username);
             }
             console.log(response.data);
-            console.log(loginStatus);
         });
     };
 
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (loginStatus === "No user found") {
+        if (value === false) {
         }
-        else if (loginStatus === '') {
-        }
-        else {
+        else if (value === true) {
             return navigate("/");
         }
-    }, [loginStatus, navigate]);
+    }, [value, navigate]);
 
     return (
         <div className='App'>
