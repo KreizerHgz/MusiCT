@@ -56,23 +56,21 @@ export default function LoginRegister() {
     }, [value, navigate]);
 
     return (
-        <div className='App'>
-            <Box height={"100vh"}>
-                <Navbar />
-                <Typography variant="h4" component="div" color='text.primary' paddingTop={10} paddingBottom={2}>Registrer deg</Typography>
-                <Stack width={200} spacing={2} justifyContent="center" alignItems="center" margin={"auto"}>
-                    <CssTextField label="Brukernavn" id="custom-css-outlined-input" onChange={(e) => { setUsernameReg(e.target.value) }} />
-                    <CssTextField label="Passord" id="custom-css-outlined-input" onChange={(e) => { setPasswordReg(e.target.value) }} />
-                    <Button variant="contained" onClick={register}>Registrer bruker</Button>
-                </Stack>
+        <Box height={"100vh"} overflow="auto">
+            <Navbar />
+            <Typography variant="h4" component="div" color='text.primary' paddingTop={10} paddingBottom={2}>Registrer deg</Typography>
+            <Stack width={200} spacing={2} justifyContent="center" alignItems="center" margin={"auto"}>
+                <CssTextField label="Brukernavn" id="custom-css-outlined-input" onChange={(e) => { setUsernameReg(e.target.value) }} />
+                <CssTextField label="Passord" id="custom-css-outlined-input" onChange={(e) => { setPasswordReg(e.target.value) }} />
+                <Button variant="contained" onClick={register}>Registrer bruker</Button>
+            </Stack>
 
-                <Typography variant="h4" component="div" color='text.primary' paddingTop={5} paddingBottom={2}>Logg inn</Typography>
-                <Stack width={200} spacing={2} justifyContent="center" alignItems="center" margin={"auto"}>
-                    <CssTextField label="Brukernavn" id="custom-css-outlined-input" onChange={(e) => { setUsername(e.target.value) }} />
-                    <CssTextField label="Passord" id="custom-css-outlined-input" onChange={(e) => { setPassword(e.target.value) }} />
-                    <Button variant="contained" onClick={login}>Logg inn</Button>
-                </Stack>
-            </Box >
-        </div >
+            <Typography variant="h4" component="div" color='text.primary' paddingTop={5} paddingBottom={2}>Logg inn</Typography>
+            <Stack width={200} spacing={2} justifyContent="center" alignItems="center" margin={"auto"}>
+                <CssTextField label="Brukernavn" id="custom-css-outlined-input" onChange={(e) => { setUsername(e.target.value) }} />
+                <CssTextField label="Passord" id="custom-css-outlined-input" onChange={(e) => { setPassword(e.target.value) }} />
+                <Button variant="contained" onClick={login}>Logg inn</Button>
+            </Stack>
+        </Box >
     )
 }

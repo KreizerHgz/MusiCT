@@ -30,7 +30,32 @@ const theme = createTheme({
       default: '#404040', // Dark 2
       paper: '#404040', // Dark 1
     },
-  }
+  },
+  overrides: {
+    MuiSelect: {
+      select: {
+        "&:focus": {
+          borderColor: 'white'
+        },
+        '&:before': {
+          borderColor: 'white'
+        },
+        '&:after': {
+          borderColor: 'white'
+        },
+      },
+    },
+  },
+  components: {
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          whiteSpace: 'normal',
+          width: 800,
+        },
+      },
+    },
+  },
 });
 
 function App() {

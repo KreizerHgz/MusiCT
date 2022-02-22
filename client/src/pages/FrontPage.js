@@ -13,7 +13,7 @@ export default function FrontPage() {
     const { value } = React.useContext(UserContext);
 
     return (
-        <Box height={"100vh"}>
+        <Box height={"100vh"} overflow="auto">
             <Navbar />
             <Grid container spacing={0}>
                 <Grid container justifyContent="center">
