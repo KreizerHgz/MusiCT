@@ -1,10 +1,12 @@
 import '../App.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Box, Button, Divider, FormControl, Grid, MenuItem, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Axios from 'axios';
+import { UserContext } from '../UserContext';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -39,12 +41,15 @@ export default function TaskCreate() {
     const [equipment, setEquipment] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [succeedes, setSucceedes] = useState(0);
-    const [preceedes, setPreceedes] = useState(0);
+    const [succeedes, setSucceedes] = useState(null);
+    const [preceedes, setPreceedes] = useState(null);
 
     const classes = useStyles();
 
     const [gradeDefined, setGradeDefined] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const { value } = useContext(UserContext);
 
     useEffect(() => {
         if (grade === "") {
@@ -54,6 +59,31 @@ export default function TaskCreate() {
             setGradeDefined(true);
         }
     }, [grade, gradeDefined]);
+
+    let navigate = useNavigate();
+
+    useEffect(() => {
+        if (submitted === false) {
+        }
+        else if (submitted === true) {
+            return navigate("/");
+        }
+    }, [submitted, navigate]);
+
+    const save = () => {
+        Axios.post('http://localhost:3001/submittask', {
+            grade: grade,
+            learningObjective: learningObjective,
+            equipment: equipment,
+            title: title,
+            description: description,
+            createdBy: value,
+            succeedes: succeedes,
+            preceedes: preceedes
+        }).then(setSubmitted(true));
+    };
+
+
 
     return (
         <Box height={"100vh"} overflow="auto">
@@ -90,7 +120,7 @@ export default function TaskCreate() {
                         <FormControl >
                             <TextField
                                 value={learningObjective}
-                                label="Kompetansemål"
+                                label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål")}
                                 onChange={(e) => { setLearningObjective(e.target.value) }}
                                 className={classes.root}
                                 disabled={!(gradeDefined)}
@@ -287,7 +317,7 @@ export default function TaskCreate() {
                 </FormControl>
             </div>
             <div>
-                <Button variant="contained" sx={{ margin: "20px" }}>Lagre</Button>
+                <Button variant="contained" sx={{ margin: "20px" }} onClick={save}>Lagre</Button>
                 <Button variant="outlined" component={Link} to="/" sx={{ margin: "20px" }}>Avbryt</Button>
             </div>
         </Box>

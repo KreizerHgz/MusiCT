@@ -38,7 +38,7 @@ export default function FrontPage() {
                                     <Typography gutterBottom variant="h3" component="div">
                                         Lag en oppgave
                                     </Typography>
-                                    {value === true ? (<Typography variant="body2" color="text.secondary">
+                                    {value ? (<Typography variant="body2" color="text.secondary">
                                         Her kan du lage en oppgave til bruk i undervisningen som passer deg og din klasse gjennom vår mal-baserte
                                         oppgavebygger
                                     </Typography>

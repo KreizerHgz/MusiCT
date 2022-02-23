@@ -40,6 +40,43 @@ app.post('/login', (req, res) => {
     })
 })
 
+app.post('/submittask', (req, res) => {
+    const grade = req.body.grade
+    const learningObjective = req.body.learningObjective
+    const equipment = req.body.equipment
+    const title = req.body.title
+    const description = req.body.description
+    const createdBy = req.body.createdBy
+    if (req.body.succeedes && req.body.preceedes) {
+        const succeedes = req.body.suceedes
+        const preceedes = req.body.preceedes
+
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Succeedes, Preceedes) VALUES (?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, succeedes, preceedes], (err, result) => {
+            console.log(err);
+        })
+    }
+    else if (!req.body.succeedes && req.body.preceedes) {
+        const preceedes = req.body.preceedes
+
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Preceedes) VALUES (?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, preceedes], (err, result) => {
+            console.log(err);
+        })
+    }
+    else if (req.body.succeedes && !req.body.preceedes) {
+        const succeedes = req.body.suceedes
+
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Succeedes) VALUES (?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, succeedes], (err, result) => {
+            console.log(err);
+        })
+    }
+    else {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy) VALUES (?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy], (err, result) => {
+            console.log(err);
+        })
+    }
+})
+
+
 app.listen(3001, () => {
     console.log("All good!");
 });

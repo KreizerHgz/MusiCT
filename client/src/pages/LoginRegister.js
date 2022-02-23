@@ -39,18 +39,16 @@ export default function LoginRegister() {
         Axios.post('http://localhost:3001/login', { username: username, password: password }).then((response) => {
             if (response.data.message) {
             } else {
-                setValue(true);
+                setValue(response.data[0].ID);
             }
-            console.log(response.data);
+            console.log(response.data[0].ID);
         });
     };
 
     let navigate = useNavigate();
 
     useEffect(() => {
-        if (value === false) {
-        }
-        else if (value === true) {
+        if (value) {
             return navigate("/");
         }
     }, [value, navigate]);

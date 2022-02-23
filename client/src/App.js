@@ -51,7 +51,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           whiteSpace: 'normal',
-          width: 800,
+          width: 400,
         },
       },
     },

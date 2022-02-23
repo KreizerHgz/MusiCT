@@ -13,7 +13,7 @@ export default function Navbar() {
     const { value, setValue } = React.useContext(UserContext);
 
     const logout = () => {
-        setValue(false);
+        setValue(null);
     }
 
     return (
@@ -24,7 +24,7 @@ export default function Navbar() {
                     <Typography variant="h4" sx={{ flexGrow: 1 }} component={Link} to="/" style={{ textDecoration: 'none', color: 'unset' }}>
                         MusiCT
                     </Typography>
-                    {value === true ? (<Button color="inherit" onClick={logout} component={Link} to="/">Logg ut</Button>
+                    {value ? (<Button color="inherit" onClick={logout} component={Link} to="/">Logg ut</Button>
                     ) : (
                         <Button color="inherit" component={Link} to="/innlogging">Logg inn</Button>)}
                 </Toolbar>
