@@ -48,7 +48,7 @@ app.post('/submittask', (req, res) => {
     const description = req.body.description
     const createdBy = req.body.createdBy
     if (req.body.succeedes && req.body.preceedes) {
-        const succeedes = req.body.suceedes
+        const succeedes = req.body.succeedes
         const preceedes = req.body.preceedes
 
         db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Succeedes, Preceedes) VALUES (?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, succeedes, preceedes], (err, result) => {
@@ -63,7 +63,7 @@ app.post('/submittask', (req, res) => {
         })
     }
     else if (req.body.succeedes && !req.body.preceedes) {
-        const succeedes = req.body.suceedes
+        const succeedes = req.body.succeedes
 
         db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Succeedes) VALUES (?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, succeedes], (err, result) => {
             console.log(err);
@@ -76,6 +76,20 @@ app.post('/submittask', (req, res) => {
     }
 })
 
+app.post('/fetchusertasks', (req, res) => {
+    const userID = req.body.userID
+
+    db.query("SELECT TaskID, Title FROM task WHERE CreatedBy = ?", [userID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "No tasks found" });
+        }
+    })
+})
 
 app.listen(3001, () => {
     console.log("All good!");
