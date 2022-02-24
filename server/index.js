@@ -91,6 +91,20 @@ app.post('/fetchusertasks', (req, res) => {
     })
 })
 
+app.post('/fetchtasks', (req, res) => {
+
+    db.query("SELECT * FROM task", (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "No tasks found" });
+        }
+    })
+})
+
 app.listen(3001, () => {
     console.log("All good!");
 });

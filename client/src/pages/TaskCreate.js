@@ -279,9 +279,14 @@ export default function TaskCreate() {
                                     classes: { icon: classes.icon }
                                 }}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
+                                <MenuItem value={"Instrument - Gitar"}>Instrument - Gitar</MenuItem>
+                                <MenuItem value={"Instrument - Piano"}>Instrument - Piano</MenuItem>
+                                <MenuItem value={"Instrument - Slagverk"}>Instrument - Slagverk</MenuItem>
+                                <MenuItem value={"Scratch"}>Scratch</MenuItem>
+                                <MenuItem value={"Sonic Pi"}>Sonic Pi</MenuItem>
+                                <MenuItem value={"Arduino"}>Arduino</MenuItem>
+                                <MenuItem value={"Digital Audio Workstation"}>Digital Audio Workstation</MenuItem>
+                                <MenuItem value={"Ekstra utstyr ikke nødvendig"}>Ekstra utstyr ikke nødvendig</MenuItem>
                             </TextField>
                         </FormControl>
                     </Grid>
