@@ -105,6 +105,96 @@ app.post('/fetchtasks', (req, res) => {
     })
 })
 
+app.post('/fetchtask', (req, res) => {
+
+    const taskID = req.body.taskID
+    let result = []
+
+    db.query("SELECT * FROM task WHERE TaskID = ?", [taskID], (err, task) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (task.length > 0) {
+            result.push(task[0]);
+            if (task[0].Succeedes) {
+                db.query("SELECT * FROM task WHERE TaskID = ?", [task[0].Succeedes], (err, succeedes) => {
+                    if (err) {
+                        res.send({ err: err });
+                    }
+                    if (succeedes.length > 0) {
+                        result.push(succeedes[0]);
+                        if (task[0].Preceedes) {
+                            db.query("SELECT * FROM task WHERE TaskID = ?", [task[0].Preceedes], (err, preceedes) => {
+                                if (err) {
+                                    res.send({ err: err });
+                                }
+                                if (preceedes.length > 0) {
+                                    result.push(preceedes[0]);
+                                    console.log(result);
+                                    res.send(result);
+                                }
+                            })
+                        } else {
+                            console.log(result);
+                            res.send(result);
+                        }
+                    }
+                })
+            }
+            else if (task[0].Preceedes) {
+                db.query("SELECT * FROM task WHERE TaskID = ?", [task[0].Preceedes], (err, preceedes) => {
+                    if (err) {
+                        res.send({ err: err });
+                    }
+                    if (preceedes.length > 0) {
+                        result.push(preceedes[0]);
+                        console.log(result);
+                        res.send(result);
+                    }
+                })
+            }
+            else {
+                console.log(result);
+                res.send(result);
+            }
+        } else {
+            res.send({ message: "Task not found" });
+        }
+    })
+})
+
+app.post('/fetchsucceedes', (req, res) => {
+
+    const taskID = req.body.taskID
+
+    db.query("SELECT * FROM task WHERE TaskID = ?", [taskID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "Task not found" });
+        }
+    })
+})
+
+app.post('/fetchpreceedes', (req, res) => {
+
+    const taskID = req.body.taskID
+
+    db.query("SELECT * FROM task WHERE TaskID = ?", [taskID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "Task not found" });
+        }
+    })
+})
+
 app.listen(3001, () => {
     console.log("All good!");
 });
