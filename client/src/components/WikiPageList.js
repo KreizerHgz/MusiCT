@@ -60,7 +60,7 @@ export default function NestedList() {
 
             <Collapse in={openCT} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("TestPage")}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Algoritmisk tenkning - Oversikt")}>
                         <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
                         />
                     </ListItemButton>
