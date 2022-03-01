@@ -41,7 +41,7 @@ export default function NestedList() {
 
     return (
         <List
-            sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper', border: 1, height: 'calc(100vh - 74px)' }}
+            sx={{ width: '100%', maxWidth: 300, bgcolor: 'background.paper', border: 1 }}
             component="nav"
             aria-labelledby="nested-list-subheader"
             subheader={
@@ -64,27 +64,27 @@ export default function NestedList() {
                         <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Logikk")}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Logikk</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Algoritmer")}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Algoritmer</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Dekomposisjon")}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Dekomposisjon</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Møsntre")}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Møsntre</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Abstraksjon")}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Abstraksjon</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Evaluering")}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Evaluering</Typography>}
                         />
                     </ListItemButton>
@@ -101,12 +101,20 @@ export default function NestedList() {
 
             <Collapse in={openMusic} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Musikkteori - Oversikt")}>
                         <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Noter")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Noter</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Skalaer")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Skalaer</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Kvintsirkelen")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Kvintsirkelen</Typography>}
                         />
                     </ListItemButton>
                 </List>
@@ -121,12 +129,12 @@ export default function NestedList() {
             <Divider />
             <Collapse in={openPed} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Pedagogikk - Oversikt")}>
                         <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Elevsentrert undervisning")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Elevsentrert undervisning</Typography>}
                         />
                     </ListItemButton>
                 </List>
@@ -141,12 +149,36 @@ export default function NestedList() {
             <Divider />
             <Collapse in={openEq} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Utstyr/Plattformer - Oversikt")}>
                         <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
                         />
                     </ListItemButton>
-                    <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Instrument - Gitar")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Instrument - Gitar</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Instrument - Piano")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Instrument - Piano</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Instrument - Slagverk")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Instrument - Slagverk</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Scratch")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Scratch</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Sonic Pi")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Sonic Pi</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Arduino")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Arduino</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("Digital Audio Workstations")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Digital Audio Workstations</Typography>}
                         />
                     </ListItemButton>
                 </List>

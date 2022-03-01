@@ -51,10 +51,6 @@ export default function Wiki() {
                     </Grid>
                 )}
             </Grid>
-
-
-
-
         </Box>
     );
 }
