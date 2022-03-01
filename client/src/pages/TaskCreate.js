@@ -67,7 +67,7 @@ export default function TaskCreate() {
         if (submitted === false) {
         }
         else if (submitted === true) {
-            //return navigate("/");
+            return navigate("/");
         }
     }, [submitted, navigate]);
 

@@ -9,6 +9,7 @@ import { createTheme, ThemeProvider } from '@mui/material';
 import LoginRegister from './pages/LoginRegister';
 import { UserContext } from './UserContext';
 import Task from './pages/Task';
+import WikiCreate from './pages/WikiCreate';
 
 const theme = createTheme({
   palette: {
@@ -71,6 +72,7 @@ function App() {
             <Routes>
               <Route path="/" element={<FrontPage />} />
               <Route path="/wiki" element={<Wiki />} />
+              <Route path="/wikicreate" element={<WikiCreate />} />
               <Route path="/lagoppgave" element={<TaskCreate />} />
               <Route path="/seoppgaver" element={<TaskBrowse />} />
               <Route path="/innlogging" element={<LoginRegister />} />

@@ -163,34 +163,28 @@ app.post('/fetchtask', (req, res) => {
     })
 })
 
-app.post('/fetchsucceedes', (req, res) => {
+app.post('/createwikipage', (req, res) => {
 
-    const taskID = req.body.taskID
+    const title = req.body.title
+    const description = req.body.description
 
-    db.query("SELECT * FROM task WHERE TaskID = ?", [taskID], (err, result) => {
-        if (err) {
-            res.send({ err: err });
-        }
-        if (result.length > 0) {
-            res.send(result);
-        } else {
-            res.send({ message: "Task not found" });
-        }
+    db.query("INSERT INTO wiki (Title, Description) VALUES (?,?)", [title, description], (err, result) => {
+        console.log(err);
     })
 })
 
-app.post('/fetchpreceedes', (req, res) => {
+app.post('/fetchwikipage', (req, res) => {
 
-    const taskID = req.body.taskID
+    const title = req.body.title
 
-    db.query("SELECT * FROM task WHERE TaskID = ?", [taskID], (err, result) => {
+    db.query("SELECT * FROM wiki WHERE Title = ?", [title], (err, result) => {
         if (err) {
             res.send({ err: err });
         }
         if (result.length > 0) {
             res.send(result);
         } else {
-            res.send({ message: "Task not found" });
+            res.send({ message: "No wikipage found" });
         }
     })
 })
