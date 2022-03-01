@@ -1,12 +1,13 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Divider, FormControl, Grid, MenuItem, styled, TextField } from '@mui/material';
+import { Box, Button, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { UserContext } from '../UserContext';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -15,6 +16,17 @@ const CssTextField = styled(TextField)({
         },
     }
 });
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 600,
+    bgcolor: '#393939',
+    boxShadow: 24,
+    p: 4,
+};
 
 const useStyles = makeStyles({
     root: {
@@ -102,6 +114,30 @@ export default function TaskCreate() {
             preceedes: preceedes
         }).then(setSubmitted(true));
     };
+
+    const [modalContent, setModalContent] = useState(null);
+
+    const [open, setOpen] = useState(false);
+    const handleClose = () => setOpen(false);
+    const handleOpen = (e) => {
+        Axios.post('http://localhost:3001/fetchwikipage', {
+            title: e
+        }).then((response) => {
+            console.log(response.data);
+            if (response.data.message) {
+                return
+            }
+            else {
+                setModalContent(response.data[0]);
+            }
+        })
+        setOpen(true);
+    }
+
+
+
+
+
 
 
 
@@ -279,13 +315,62 @@ export default function TaskCreate() {
                                     classes: { icon: classes.icon }
                                 }}
                             >
-                                <MenuItem value={"Instrument - Gitar"}>Instrument - Gitar</MenuItem>
-                                <MenuItem value={"Instrument - Piano"}>Instrument - Piano</MenuItem>
-                                <MenuItem value={"Instrument - Slagverk"}>Instrument - Slagverk</MenuItem>
-                                <MenuItem value={"Scratch"}>Scratch</MenuItem>
-                                <MenuItem value={"Sonic Pi"}>Sonic Pi</MenuItem>
-                                <MenuItem value={"Arduino"}>Arduino</MenuItem>
-                                <MenuItem value={"Digital Audio Workstation"}>Digital Audio Workstation</MenuItem>
+                                <MenuItem value={"Instrument - Gitar"}>
+                                    <ListItemText>
+                                        Instrument - Gitar
+                                    </ListItemText>
+                                    {equipment !== "Instrument - Gitar" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Gitar") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
+                                <MenuItem value={"Instrument - Piano"}>
+                                    <ListItemText>
+                                        Instrument - Piano
+                                    </ListItemText>
+                                    {equipment !== "Instrument - Piano" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Piano") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
+                                <MenuItem value={"Instrument - Slagverk"}>
+                                    <ListItemText>
+                                        Instrument - Slagverk
+                                    </ListItemText>
+                                    {equipment !== "Instrument - Slagverk" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Slagverk") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
+                                <MenuItem value={"Scratch"}>
+                                    <ListItemText>
+                                        Scratch
+                                    </ListItemText>
+                                    {equipment !== "Scratch" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Scratch") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
+                                <MenuItem value={"Sonic Pi"}>
+                                    <ListItemText>
+                                        Sonic Pi
+                                    </ListItemText>
+                                    {equipment !== "Sonic Pi" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Sonic Pi") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
+                                <MenuItem value={"Arduino"}>
+                                    <ListItemText>
+                                        Arduino
+                                    </ListItemText>
+                                    {equipment !== "Arduino" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Arduino") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
+                                <MenuItem value={"Digital Audio Workstation"}>
+                                    <ListItemText>
+                                        Digital Audio Workstation
+                                    </ListItemText>
+                                    {equipment !== "Digital Audio Workstation" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Digital Audio Workstation") }}>
+                                        <HelpOutlineIcon />
+                                    </Button>}
+                                </MenuItem>
                                 <MenuItem value={"Ekstra utstyr ikke nødvendig"}>Ekstra utstyr ikke nødvendig</MenuItem>
                             </TextField>
                         </FormControl>
@@ -352,6 +437,23 @@ export default function TaskCreate() {
                 <Button variant="contained" sx={{ margin: "20px" }} onClick={save}>Lagre</Button>
                 <Button variant="outlined" component={Link} to="/" sx={{ margin: "20px" }}>Avbryt</Button>
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                {modalContent ? (
+                    <Box sx={style}>
+                        <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
+                            {modalContent.Title}
+                        </Typography>
+                        <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
+                            {modalContent.Description}
+                        </Typography>
+                    </Box>
+                ) : (<></>)}
+            </Modal>
         </Box>
     );
 }

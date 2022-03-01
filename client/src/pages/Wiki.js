@@ -26,6 +26,25 @@ export default function Wiki() {
         })
     }, [wiki])
 
+    React.useEffect(() => {
+        if (wiki) {
+            Axios.post('http://localhost:3001/fetchwikipage', {
+                title: wiki
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    return
+                }
+                else {
+                    setContent(response.data[0]);
+                }
+            })
+        }
+        else {
+            console.log("Wiki not set");
+        }
+    }, [])
+
 
     return (
         <Box height="100vh" overflow="auto">
