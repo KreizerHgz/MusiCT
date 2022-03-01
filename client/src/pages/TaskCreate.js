@@ -1,7 +1,7 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, Divider, FormControl, Grid, List, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
@@ -134,12 +134,25 @@ export default function TaskCreate() {
         setOpen(true);
     }
 
+    const [similarTasks, setSimilarTasks] = useState(null);
+    const [openSimilar, setOpenSimilar] = useState(false);
+    const handleCloseSimilar = () => setOpenSimilar(false);
 
-
-
-
-
-
+    const findTasks = () => {
+        Axios.post('http://localhost:3001/fetchsimilartasks', {
+            learningObjective: learningObjective,
+            equipment: equipment
+        }).then((response) => {
+            console.log(response.data);
+            if (response.data.message) {
+                alert(response.data.message);
+            }
+            else {
+                setSimilarTasks(response.data);
+                setOpenSimilar(true);
+            }
+        })
+    }
 
     return (
         <Box height={"100vh"} overflow="auto">
@@ -151,9 +164,10 @@ export default function TaskCreate() {
                 align="center"
                 justify="center"
                 direction="column"
-                marginTop={"20px"}>
+                marginTop={"20px"}
+                marginBottom={"20px"}>
                 <Grid container justifyContent="center">
-                    <Grid item xs={4}>
+                    <Grid item xs={2}>
                         <FormControl >
                             <TextField
                                 value={grade}
@@ -172,7 +186,7 @@ export default function TaskCreate() {
                             </TextField>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={2}>
                         <FormControl >
                             <TextField
                                 value={learningObjective}
@@ -303,7 +317,7 @@ export default function TaskCreate() {
                             </TextField>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={2}>
                         <FormControl >
                             <TextField
                                 value={equipment}
@@ -377,6 +391,13 @@ export default function TaskCreate() {
                     </Grid>
                 </Grid>
             </Grid>
+            {learningObjective !== "" && equipment !== "" ? (
+                <div>
+                    <Button variant="contained" onClick={findTasks}>
+                        Finn lignende oppgaver
+                    </Button>
+                </div>
+            ) : (<></>)}
             <CssTextField label="Tittel" id="custom-css-outlined-input" sx={{ width: 600, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
             <div>
                 <CssTextField
@@ -453,6 +474,49 @@ export default function TaskCreate() {
                         </Typography>
                     </Box>
                 ) : (<></>)}
+            </Modal>
+
+            <Modal
+                open={openSimilar}
+                onClose={handleCloseSimilar}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                overflow="scroll"
+            >
+                <Box sx={style} overflow="auto" height="85vh">
+                    {similarTasks ? (
+                        similarTasks.map((element => {
+                            return (
+                                <div>
+                                    <Card sx={{ margin: "20px", marginTop: "150px", width: "400px" }}>
+                                        <CardActionArea component={Link} to={"/task/" + element.TaskID} target={"_blank"} sx={{ width: "400px" }} >
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h4" component="div">
+                                                    {element.Title}
+                                                </Typography>
+                                                <Typography align="left" variant="body2" color="text.secondary">
+                                                    Passer for {element.Grade}
+                                                </Typography>
+                                                <Divider sx={{ borderBottomWidth: 3 }} />
+                                                <Typography align="left" variant="body2" color="text.secondary">
+                                                    Kompetansemål: {element.LearningObjective}
+                                                </Typography>
+                                                <Divider sx={{ borderBottomWidth: 3 }} />
+                                                <Typography align="left" variant="body2" color="text.secondary">
+                                                    Utstyr/Plattform: {element.Equipment}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Card>
+                                    <Button variant="contained">
+                                        Importer oppgave
+                                    </Button>
+                                </div>
+                            );
+                        }))
+                    ) : (<Typography variant="h3" component="div" gutterBottom color='text.primary'>Ingen oppgaver funnet :|</Typography>)
+                    }
+                </Box>
             </Modal>
         </Box>
     );

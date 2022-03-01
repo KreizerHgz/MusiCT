@@ -189,6 +189,24 @@ app.post('/fetchwikipage', (req, res) => {
     })
 })
 
+app.post('/fetchsimilartasks', (req, res) => {
+
+    const learningObjective = req.body.learningObjective
+    const equipment = req.body.equipment
+
+    db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ?", [learningObjective, equipment], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "No tasks found" });
+        }
+    })
+})
+
+
 app.listen(3001, () => {
     console.log("All good!");
 });
