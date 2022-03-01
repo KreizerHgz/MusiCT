@@ -8,6 +8,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
+import { WikiContext } from '../WikiContext';
 
 export default function NestedList() {
     const [openCT, setOpenCT] = React.useState(false);
@@ -28,7 +29,15 @@ export default function NestedList() {
         setOpenPed(!openPed);
     };
 
+    const [openEq, setOpenEq] = React.useState(false);
+
+    const handleClickEq = () => {
+        setOpenEq(!openEq);
+    };
+
     const colorIcon = "rgba(255, 255, 255, 0.7)";
+
+    const { setWiki } = React.useContext(WikiContext);
 
     return (
         <List
@@ -51,16 +60,32 @@ export default function NestedList() {
 
             <Collapse in={openCT} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Oversikt</Typography>}
+                    <ListItemButton sx={{ pl: 4 }} onClick={() => setWiki("TestPage")}>
+                        <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
                         />
                     </ListItemButton>
                     <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Logikk</Typography>}
                         />
                     </ListItemButton>
                     <ListItemButton sx={{ pl: 4 }}>
-                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Algoritmer</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Dekomposisjon</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Møsntre</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Abstraksjon</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Evaluering</Typography>}
                         />
                     </ListItemButton>
                 </List>
@@ -77,6 +102,10 @@ export default function NestedList() {
             <Collapse in={openMusic} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
                         />
                     </ListItemButton>
@@ -92,6 +121,30 @@ export default function NestedList() {
             <Divider />
             <Collapse in={openPed} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
+                        />
+                    </ListItemButton>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
+                        />
+                    </ListItemButton>
+                </List>
+            </Collapse>
+            <Divider />
+
+            <ListItemButton onClick={handleClickEq}>
+                <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">Utstyr/Plattformer</Typography>}
+                />
+                {openEq ? <ExpandLess htmlColor={colorIcon} /> : <ExpandMore htmlColor={colorIcon} />}
+            </ListItemButton>
+            <Divider />
+            <Collapse in={openEq} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemText disableTypography primary={<Typography type="body2" fontWeight={600} color="text.secondary">Oversikt</Typography>}
+                        />
+                    </ListItemButton>
                     <ListItemButton sx={{ pl: 4 }}>
                         <ListItemText disableTypography primary={<Typography type="body2" color="text.secondary">MyTitle</Typography>}
                         />

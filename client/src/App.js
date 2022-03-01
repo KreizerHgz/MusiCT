@@ -10,6 +10,7 @@ import LoginRegister from './pages/LoginRegister';
 import { UserContext } from './UserContext';
 import Task from './pages/Task';
 import WikiCreate from './pages/WikiCreate';
+import { WikiContext } from './WikiContext';
 
 const theme = createTheme({
   palette: {
@@ -63,21 +64,24 @@ const theme = createTheme({
 function App() {
 
   const [value, setValue] = useState(false);
+  const [wiki, setWiki] = useState(null);
 
   return (
     <div className="App">
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <UserContext.Provider value={{ value, setValue }}>
-            <Routes>
-              <Route path="/" element={<FrontPage />} />
-              <Route path="/wiki" element={<Wiki />} />
-              <Route path="/wikicreate" element={<WikiCreate />} />
-              <Route path="/lagoppgave" element={<TaskCreate />} />
-              <Route path="/seoppgaver" element={<TaskBrowse />} />
-              <Route path="/innlogging" element={<LoginRegister />} />
-              <Route path="/task/:id" element={<Task />} />
-            </Routes>
+            <WikiContext.Provider value={{ wiki, setWiki }}>
+              <Routes>
+                <Route path="/" element={<FrontPage />} />
+                <Route path="/wiki" element={<Wiki />} />
+                <Route path="/wikicreate" element={<WikiCreate />} />
+                <Route path="/lagoppgave" element={<TaskCreate />} />
+                <Route path="/seoppgaver" element={<TaskBrowse />} />
+                <Route path="/innlogging" element={<LoginRegister />} />
+                <Route path="/task/:id" element={<Task />} />
+              </Routes>
+            </WikiContext.Provider>
           </UserContext.Provider>
         </ThemeProvider>
       </BrowserRouter>
