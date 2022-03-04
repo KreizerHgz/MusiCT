@@ -154,6 +154,13 @@ export default function TaskCreate() {
         })
     }
 
+    const importTask = (e) => {
+        setTitle(e.Title);
+        setDescription(e.Description);
+        setOpenSimilar(false);
+        console.log(e, title, description);
+    }
+
     return (
         <Box height={"100vh"} overflow="auto">
             <Navbar />
@@ -329,62 +336,104 @@ export default function TaskCreate() {
                                     classes: { icon: classes.icon }
                                 }}
                             >
-                                <MenuItem value={"Instrument - Gitar"}>
-                                    <ListItemText>
+                                {equipment !== "Instrument - Gitar" ? (
+                                    <MenuItem value={"Instrument - Gitar"}>
+                                        <ListItemText>
+                                            Instrument - Gitar
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Gitar") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Instrument - Gitar"}>
                                         Instrument - Gitar
-                                    </ListItemText>
-                                    {equipment !== "Instrument - Gitar" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Gitar") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
-                                <MenuItem value={"Instrument - Piano"}>
-                                    <ListItemText>
+                                    </MenuItem>
+                                )}
+                                {equipment !== "Instrument - Piano" ? (
+                                    <MenuItem value={"Instrument - Piano"}>
+                                        <ListItemText>
+                                            Instrument - Piano
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Piano") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Instrument - Piano"}>
                                         Instrument - Piano
-                                    </ListItemText>
-                                    {equipment !== "Instrument - Piano" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Piano") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
-                                <MenuItem value={"Instrument - Slagverk"}>
-                                    <ListItemText>
+                                    </MenuItem>
+                                )}
+                                {equipment !== "Instrument - Slagverk" ? (
+                                    <MenuItem value={"Instrument - Slagverk"}>
+                                        <ListItemText>
+                                            Instrument - Slagverk
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Slagverk") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Instrument - Slagverk"}>
                                         Instrument - Slagverk
-                                    </ListItemText>
-                                    {equipment !== "Instrument - Slagverk" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Slagverk") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
-                                <MenuItem value={"Scratch"}>
-                                    <ListItemText>
+                                    </MenuItem>
+                                )}
+                                {equipment !== "Scratch" ? (
+                                    <MenuItem value={"Scratch"}>
+                                        <ListItemText>
+                                            Scratch
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Scratch") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Scratch"}>
                                         Scratch
-                                    </ListItemText>
-                                    {equipment !== "Scratch" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Scratch") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
-                                <MenuItem value={"Sonic Pi"}>
-                                    <ListItemText>
+                                    </MenuItem>
+                                )}
+                                {equipment !== "Sonic Pi" ? (
+                                    <MenuItem value={"Sonic Pi"}>
+                                        <ListItemText>
+                                            Sonic Pi
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Sonic Pi") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Sonic Pi"}>
                                         Sonic Pi
-                                    </ListItemText>
-                                    {equipment !== "Sonic Pi" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Sonic Pi") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
-                                <MenuItem value={"Arduino"}>
-                                    <ListItemText>
+                                    </MenuItem>
+                                )}
+                                {equipment !== "Arduino" ? (
+                                    <MenuItem value={"Arduino"}>
+                                        <ListItemText>
+                                            Arduino
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Arduino") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Arduino"}>
                                         Arduino
-                                    </ListItemText>
-                                    {equipment !== "Arduino" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Arduino") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
-                                <MenuItem value={"Digital Audio Workstation"}>
-                                    <ListItemText>
+                                    </MenuItem>
+                                )}
+                                {equipment !== "Digital Audio Workstation" ? (
+                                    <MenuItem value={"Digital Audio Workstation"}>
+                                        <ListItemText>
+                                            Digital Audio Workstation
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Digital Audio Workstation") }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
+                                    </MenuItem>
+                                ) : (
+                                    <MenuItem value={"Digital Audio Workstation"}>
                                         Digital Audio Workstation
-                                    </ListItemText>
-                                    {equipment !== "Digital Audio Workstation" && <Button onClick={(e) => { e.stopPropagation(); handleOpen("Digital Audio Workstation") }}>
-                                        <HelpOutlineIcon />
-                                    </Button>}
-                                </MenuItem>
+                                    </MenuItem>
+                                )}
                                 <MenuItem value={"Ekstra utstyr ikke nødvendig"}>Ekstra utstyr ikke nødvendig</MenuItem>
                             </TextField>
                         </FormControl>
@@ -398,11 +447,12 @@ export default function TaskCreate() {
                     </Button>
                 </div>
             ) : (<></>)}
-            <CssTextField label="Tittel" id="custom-css-outlined-input" sx={{ width: 600, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
+            <CssTextField value={title} label={title ? ("") : ("Tittel")} id="custom-css-outlined-input" sx={{ width: 600, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
             <div>
                 <CssTextField
                     id="outlined-multiline-static"
-                    label="Oppgavebeskrivelse"
+                    value={description}
+                    label={description ? ("") : ("Oppgavebeskrivelse")}
                     multiline
                     rows={15}
                     sx={{ width: 600, marginTop: "20px", marginBottom: "20px" }}
@@ -484,40 +534,50 @@ export default function TaskCreate() {
                 overflow="scroll"
             >
                 <Box sx={style} overflow="auto" height="85vh">
-                    {similarTasks ? (
-                        similarTasks.map((element => {
-                            return (
-                                <div>
-                                    <Card sx={{ margin: "20px", marginTop: "150px", width: "400px" }}>
-                                        <CardActionArea component={Link} to={"/task/" + element.TaskID} target={"_blank"} sx={{ width: "400px" }} >
-                                            <CardContent>
-                                                <Typography gutterBottom variant="h4" component="div">
-                                                    {element.Title}
-                                                </Typography>
-                                                <Typography align="left" variant="body2" color="text.secondary">
-                                                    Passer for {element.Grade}
-                                                </Typography>
-                                                <Divider sx={{ borderBottomWidth: 3 }} />
-                                                <Typography align="left" variant="body2" color="text.secondary">
-                                                    Kompetansemål: {element.LearningObjective}
-                                                </Typography>
-                                                <Divider sx={{ borderBottomWidth: 3 }} />
-                                                <Typography align="left" variant="body2" color="text.secondary">
-                                                    Utstyr/Plattform: {element.Equipment}
-                                                </Typography>
-                                            </CardContent>
-                                        </CardActionArea>
-                                    </Card>
-                                    <Button variant="contained">
-                                        Importer oppgave
-                                    </Button>
-                                </div>
-                            );
-                        }))
-                    ) : (<Typography variant="h3" component="div" gutterBottom color='text.primary'>Ingen oppgaver funnet :|</Typography>)
-                    }
+                    <Grid
+                        container spacing={0}
+                        align="center"
+                        justify="center"
+                        direction="column"
+                        marginTop={"20px"}
+                        marginBottom={"20px"}>
+                        <Grid container justifyContent="center">
+                            {similarTasks ? (
+                                similarTasks.map((element => {
+                                    return (
+                                        <div>
+                                            <Card sx={{ margin: "20px", marginTop: "150px", width: "400px" }}>
+                                                <CardActionArea component={Link} to={"/task/" + element.TaskID} target={"_blank"} sx={{ width: "400px" }} >
+                                                    <CardContent>
+                                                        <Typography gutterBottom variant="h4" component="div">
+                                                            {element.Title}
+                                                        </Typography>
+                                                        <Typography align="left" variant="body2" color="text.secondary">
+                                                            Passer for {element.Grade}
+                                                        </Typography>
+                                                        <Divider sx={{ borderBottomWidth: 3 }} />
+                                                        <Typography align="left" variant="body2" color="text.secondary">
+                                                            Kompetansemål: {element.LearningObjective}
+                                                        </Typography>
+                                                        <Divider sx={{ borderBottomWidth: 3 }} />
+                                                        <Typography align="left" variant="body2" color="text.secondary">
+                                                            Utstyr/Plattform: {element.Equipment}
+                                                        </Typography>
+                                                    </CardContent>
+                                                </CardActionArea>
+                                            </Card>
+                                            <Button variant="contained" onClick={() => importTask(element)}>
+                                                Importer oppgave
+                                            </Button>
+                                        </div>
+                                    );
+                                }))
+                            ) : (<Typography variant="h3" component="div" gutterBottom color='text.primary'>Ingen oppgaver funnet :|</Typography>)
+                            }
+                        </Grid>
+                    </Grid>
                 </Box>
-            </Modal>
-        </Box>
+            </Modal >
+        </Box >
     );
 }
