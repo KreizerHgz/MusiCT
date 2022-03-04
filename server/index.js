@@ -91,6 +91,21 @@ app.post('/fetchusertasks', (req, res) => {
     })
 })
 
+app.post('/fetchmytasks', (req, res) => {
+    const userID = req.body.userID
+
+    db.query("SELECT * FROM task WHERE CreatedBy = ?", [userID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+        if (result.length > 0) {
+            res.send(result);
+        } else {
+            res.send({ message: "No tasks found" });
+        }
+    })
+})
+
 app.post('/fetchtasks', (req, res) => {
 
     db.query("SELECT * FROM task", (err, result) => {
@@ -202,6 +217,33 @@ app.post('/fetchsimilartasks', (req, res) => {
             res.send(result);
         } else {
             res.send({ message: "No tasks found" });
+        }
+    })
+})
+
+app.post('/updatetask', (req, res) => {
+
+    const grade = req.body.grade
+    const learningObjective = req.body.learningObjective
+    const equipment = req.body.equipment
+    const title = req.body.title
+    const description = req.body.description
+    const taskID = req.body.taskID
+
+    db.query("UPDATE task SET Grade = ?, LearningObjective = ?, Equipment = ?, Title = ?, Description = ? WHERE TaskID = ?", [grade, learningObjective, equipment, title, description, taskID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+    })
+})
+
+app.post('/deletetask', (req, res) => {
+
+    const taskID = req.body.taskID
+
+    db.query("DELETE FROM task WHERE TaskID = ?", [taskID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
         }
     })
 })

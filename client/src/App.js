@@ -11,6 +11,8 @@ import { UserContext } from './UserContext';
 import Task from './pages/Task';
 import WikiCreate from './pages/WikiCreate';
 import { WikiContext } from './WikiContext';
+import MyTasks from './pages/MyTasks';
+import EditTask from './pages/EditTask';
 
 const theme = createTheme({
   palette: {
@@ -79,7 +81,9 @@ function App() {
                 <Route path="/lagoppgave" element={<TaskCreate />} />
                 <Route path="/seoppgaver" element={<TaskBrowse />} />
                 <Route path="/innlogging" element={<LoginRegister />} />
-                <Route path="/task/:id" element={<Task />} />
+                <Route path="/oppgave/:id" element={<Task />} />
+                <Route path="/mineoppgaver" element={<MyTasks />} />
+                <Route path="/rediger/:id" element={<EditTask />} />
               </Routes>
             </WikiContext.Provider>
           </UserContext.Provider>

@@ -1,14 +1,13 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Card, CardActionArea, CardContent, Divider, FormControl, Grid, List, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { UserContext } from '../UserContext';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -47,15 +46,13 @@ const useStyles = makeStyles({
     },
 });
 
-export default function TaskCreate() {
+export default function EditTask() {
 
     const [grade, setGrade] = useState("");
     const [learningObjective, setLearningObjective] = useState("");
     const [equipment, setEquipment] = useState("");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [succeedes, setSucceedes] = useState(null);
-    const [preceedes, setPreceedes] = useState(null);
 
     const classes = useStyles();
 
@@ -63,7 +60,7 @@ export default function TaskCreate() {
     const [submitted, setSubmitted] = useState(false);
 
     const { value } = useContext(UserContext);
-    const [otherTasks, setOtherTasks] = useState(null);
+    const path = window.location.pathname.split("/")[2]
 
     useEffect(() => {
         if (grade === "") {
@@ -85,34 +82,38 @@ export default function TaskCreate() {
     }, [submitted, navigate]);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchusertasks', {
+        Axios.post('http://localhost:3001/fetchmytasks', {
             userID: value
         }).then((response) => {
-            console.log(response.data);
             if (response.data.message) {
                 return
             }
             else {
-                setOtherTasks(response.data);
+                for (const i in response.data) {
+                    const e = response.data[i];
+                    if (e.TaskID === parseInt(path)) {
+                        const t = response.data.splice(response.data.indexOf(e), 1);
+                        console.log(t);
+                        setGrade(t[0].Grade);
+                        setLearningObjective(t[0].LearningObjective);
+                        setEquipment(t[0].Equipment);
+                        setTitle(t[0].Title);
+                        setDescription(t[0].Description);
+                    }
+                }
             }
         })
     }, []);
 
-    useEffect(() => {
-        console.log("Succeedes:", succeedes);
-        console.log("Preceedes:", preceedes);
-    }, [succeedes, preceedes]);
 
     const save = () => {
-        Axios.post('http://localhost:3001/submittask', {
+        Axios.post('http://localhost:3001/updatetask', {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,
             title: title,
             description: description,
-            createdBy: value,
-            succeedes: succeedes,
-            preceedes: preceedes
+            taskID: path
         }).then(setSubmitted(true));
     };
 
@@ -135,37 +136,6 @@ export default function TaskCreate() {
         setOpen(true);
     }
 
-    const [similarTasks, setSimilarTasks] = useState(null);
-    const [openSimilar, setOpenSimilar] = useState(false);
-    const handleCloseSimilar = () => setOpenSimilar(false);
-
-    const findTasks = () => {
-        Axios.post('http://localhost:3001/fetchsimilartasks', {
-            learningObjective: learningObjective,
-            equipment: equipment
-        }).then((response) => {
-            console.log(response.data);
-            if (response.data.message) {
-                alert(response.data.message);
-            }
-            else {
-                setSimilarTasks(response.data);
-                setOpenSimilar(true);
-            }
-        })
-    }
-
-    const importTask = (e) => {
-        setTitle(e.Title);
-        setDescription(e.Description);
-        setOpenSimilar(false);
-        console.log(e, title, description);
-    }
-
-    const [openCreatorInfo, setOpenCreatorInfo] = useState(false);
-    const handleCloseCreatorInfo = () => setOpenCreatorInfo(false);
-    const handleOpenCreatorInfo = () => setOpenCreatorInfo(true);
-
 
     return (
         <Box height={"100vh"} overflow="auto">
@@ -178,10 +148,7 @@ export default function TaskCreate() {
                 marginTop={"20px"}
                 marginBottom={"20px"}>
                 <Grid container justifyContent="center">
-                    <Typography variant="h3" component="div" gutterBottom color='text.primary'>Oppgavebygger</Typography>
-                    <Button onClick={(e) => { e.stopPropagation(); handleOpenCreatorInfo() }}>
-                        <HelpOutlineIcon />
-                    </Button>
+                    <Typography variant="h3" component="div" gutterBottom color='text.primary'>Rediger Oppgave</Typography>
                 </Grid>
             </Grid>
             <Divider />
@@ -459,13 +426,6 @@ export default function TaskCreate() {
                     </Grid>
                 </Grid>
             </Grid>
-            {learningObjective !== "" && equipment !== "" ? (
-                <div>
-                    <Button variant="contained" onClick={findTasks}>
-                        Finn lignende oppgaver
-                    </Button>
-                </div>
-            ) : (<></>)}
             <CssTextField value={title} label={title ? ("") : ("Tittel")} id="custom-css-outlined-input" sx={{ width: 600, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
             <div>
                 <CssTextField
@@ -477,51 +437,6 @@ export default function TaskCreate() {
                     sx={{ width: 600, marginTop: "20px", marginBottom: "20px" }}
                     onChange={(e) => { setDescription(e.target.value) }}
                 />
-            </div>
-            <div>
-                <FormControl >
-                    <TextField
-                        value={succeedes}
-                        label="Bygger videre på"
-                        onChange={(e) => { setSucceedes(e.target.value) }}
-                        className={classes.root}
-                        sx={{ marginBottom: "20px" }}
-                        select
-                        SelectProps={{
-                            classes: { icon: classes.icon }
-                        }}
-                    >
-                        {otherTasks ? (
-                            otherTasks.map((element) => {
-                                return <MenuItem value={element.TaskID}>{element.Title}</MenuItem>
-                            })
-                        ) : (<></>)
-                        }
-
-                    </TextField>
-                </FormControl>
-            </div>
-            <div>
-                <FormControl >
-                    <TextField
-                        value={preceedes}
-                        label="Neste nivå"
-                        onChange={(e) => { setPreceedes(e.target.value) }}
-                        className={classes.root}
-                        sx={{ marginBottom: "20px" }}
-                        select
-                        SelectProps={{
-                            classes: { icon: classes.icon }
-                        }}
-                    >
-                        {otherTasks ? (
-                            otherTasks.map((element) => {
-                                return <MenuItem value={element.TaskID}>{element.Title}</MenuItem>
-                            })
-                        ) : (<></>)
-                        }
-                    </TextField>
-                </FormControl>
             </div>
             <div>
                 <Button variant="contained" sx={{ margin: "20px" }} onClick={save}>Lagre</Button>
@@ -543,90 +458,6 @@ export default function TaskCreate() {
                         </Typography>
                     </Box>
                 ) : (<></>)}
-            </Modal>
-
-            <Modal
-                open={openSimilar}
-                onClose={handleCloseSimilar}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                overflow="scroll"
-            >
-                <Box sx={style} overflow="auto" height="85vh">
-                    <Grid
-                        container spacing={0}
-                        align="center"
-                        justify="center"
-                        direction="column"
-                        marginTop={"20px"}
-                        marginBottom={"20px"}>
-                        <Grid container justifyContent="center">
-                            {similarTasks ? (
-                                similarTasks.map((element => {
-                                    return (
-                                        <div>
-                                            <Card sx={{ margin: "20px", marginTop: "150px", width: "400px" }}>
-                                                <CardActionArea component={Link} to={"/oppgave/" + element.TaskID} target={"_blank"} sx={{ width: "400px" }} >
-                                                    <CardContent>
-                                                        <Grid container spacing={0}>
-                                                            <Grid item xs={10}>
-                                                                <Typography gutterBottom variant="h5" component="div">
-                                                                    {element.Title}
-                                                                </Typography>
-                                                            </Grid>
-                                                            <Grid item xs={2}>
-                                                                <OpenInNewIcon />
-                                                            </Grid>
-                                                        </Grid>
-                                                        <Typography align="left" variant="body2" color="text.secondary">
-                                                            Passer for {element.Grade}
-                                                        </Typography>
-                                                        <Divider sx={{ borderBottomWidth: 3 }} />
-                                                        <Typography align="left" variant="body2" color="text.secondary">
-                                                            Kompetansemål: {element.LearningObjective}
-                                                        </Typography>
-                                                        <Divider sx={{ borderBottomWidth: 3 }} />
-                                                        <Typography align="left" variant="body2" color="text.secondary">
-                                                            Utstyr/Plattform: {element.Equipment}
-                                                        </Typography>
-                                                    </CardContent>
-                                                </CardActionArea>
-                                            </Card>
-                                            <Button variant="contained" onClick={() => importTask(element)}>
-                                                Importer oppgave
-                                            </Button>
-                                        </div>
-                                    );
-                                }))
-                            ) : (<Typography variant="h3" component="div" gutterBottom color='text.primary'>Ingen oppgaver funnet :|</Typography>)
-                            }
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Modal >
-
-            <Modal
-                open={openCreatorInfo}
-                onClose={handleCloseCreatorInfo}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
-                        Hva er oppgavebyggeren?
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
-                        Velkommen til Oppgavebyggeren!
-                        Oppgavebyggeren er ditt verktøy for å lage oppgaver til bruk i undervisningen av deg og andre lærere.
-                        Husk at det er andre lærere som vil se oppgavene dine slik at de ikke trenger å være rettet mot elevene nå.
-                    </Typography>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
-                        Oppgavebyggeren lar deg lage oppgaver som er tilpasset trinn, kompetansemål og utstyr som elevene trenger for å utføre oppgaven.
-                        Oppgaven din kan også være koblet mot dine andre oppgaver som forrige og neste nivå dersom du ønsker en progresjon.
-                        Oppgavebyggeren er lagd for å være veiledende og finner lignende oppgaver fra vår database for deg når klassenivå, kompetansemål og utstyr er definert.
-                        Du kan enten åpne oppgavesidene for disse oppgavene for inspirasjon, eller du kan importere oppgaven inn i din oppgavebygger for å modifisere oppgaven slik at den passer deg
-                    </Typography>
-                </Box>
             </Modal>
         </Box >
     );
