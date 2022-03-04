@@ -37,7 +37,7 @@ export default function TaskBrowse() {
                             return <Card sx={{ margin: "20px", marginTop: "150px", width: "400px" }}>
                                 <CardActionArea component={Link} to={"/task/" + element.TaskID} sx={{ width: "400px" }} >
                                     <CardContent>
-                                        <Typography gutterBottom variant="h4" component="div">
+                                        <Typography gutterBottom variant="h5" component="div">
                                             {element.Title}
                                         </Typography>
                                         <Typography align="left" variant="body2" color="text.secondary">

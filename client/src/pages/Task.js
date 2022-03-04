@@ -4,6 +4,7 @@ import Axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 export default function Task() {
     const path = window.location.pathname.split("/")[2]
@@ -75,9 +76,16 @@ export default function Task() {
                             <Card sx={{ margin: "20px", marginTop: "20px", width: "400px" }}>
                                 <CardActionArea component={Link} to={"/task/" + succeedes.TaskID} target={"_blank"} sx={{ width: "400px" }} >
                                     <CardContent>
-                                        <Typography gutterBottom variant="h4" component="div">
-                                            {succeedes.Title}
-                                        </Typography>
+                                        <Grid container spacing={0}>
+                                            <Grid item xs={10}>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {succeedes.Title}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <OpenInNewIcon />
+                                            </Grid>
+                                        </Grid>
                                         <Typography align="left" variant="body2" color="text.secondary">
                                             Passer for {succeedes.Grade}
                                         </Typography>
@@ -100,9 +108,16 @@ export default function Task() {
                             <Card sx={{ margin: "20px", marginTop: "20px", width: "400px" }}>
                                 <CardActionArea component={Link} to={"/task/" + preceedes.TaskID} target={"_blank"} sx={{ width: "400px" }} >
                                     <CardContent>
-                                        <Typography gutterBottom variant="h4" component="div">
-                                            {preceedes.Title}
-                                        </Typography>
+                                        <Grid container spacing={0}>
+                                            <Grid item xs={10}>
+                                                <Typography gutterBottom variant="h5" component="div">
+                                                    {preceedes.Title}
+                                                </Typography>
+                                            </Grid>
+                                            <Grid item xs={2}>
+                                                <OpenInNewIcon />
+                                            </Grid>
+                                        </Grid>
                                         <Typography align="left" variant="body2" color="text.secondary">
                                             Passer for {preceedes.Grade}
                                         </Typography>

@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { UserContext } from '../UserContext';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -161,10 +162,28 @@ export default function TaskCreate() {
         console.log(e, title, description);
     }
 
+    const [openCreatorInfo, setOpenCreatorInfo] = useState(false);
+    const handleCloseCreatorInfo = () => setOpenCreatorInfo(false);
+    const handleOpenCreatorInfo = () => setOpenCreatorInfo(true);
+
+
     return (
         <Box height={"100vh"} overflow="auto">
             <Navbar />
-            <Typography variant="h3" component="div" gutterBottom color='text.primary'>Oppgavebygger</Typography>
+            <Grid
+                container spacing={0}
+                align="center"
+                justify="center"
+                direction="column"
+                marginTop={"20px"}
+                marginBottom={"20px"}>
+                <Grid container justifyContent="center">
+                    <Typography variant="h3" component="div" gutterBottom color='text.primary'>Oppgavebygger</Typography>
+                    <Button onClick={(e) => { e.stopPropagation(); handleOpenCreatorInfo() }}>
+                        <HelpOutlineIcon />
+                    </Button>
+                </Grid>
+            </Grid>
             <Divider />
             <Grid
                 container spacing={0}
@@ -549,9 +568,16 @@ export default function TaskCreate() {
                                             <Card sx={{ margin: "20px", marginTop: "150px", width: "400px" }}>
                                                 <CardActionArea component={Link} to={"/task/" + element.TaskID} target={"_blank"} sx={{ width: "400px" }} >
                                                     <CardContent>
-                                                        <Typography gutterBottom variant="h4" component="div">
-                                                            {element.Title}
-                                                        </Typography>
+                                                        <Grid container spacing={0}>
+                                                            <Grid item xs={10}>
+                                                                <Typography gutterBottom variant="h5" component="div">
+                                                                    {element.Title}
+                                                                </Typography>
+                                                            </Grid>
+                                                            <Grid item xs={2}>
+                                                                <OpenInNewIcon />
+                                                            </Grid>
+                                                        </Grid>
                                                         <Typography align="left" variant="body2" color="text.secondary">
                                                             Passer for {element.Grade}
                                                         </Typography>
@@ -578,6 +604,30 @@ export default function TaskCreate() {
                     </Grid>
                 </Box>
             </Modal >
+
+            <Modal
+                open={openCreatorInfo}
+                onClose={handleCloseCreatorInfo}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
+                        Hva er oppgavebyggeren?
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
+                        Velkommen til Oppgavebyggeren!
+                        Oppgavebyggeren er ditt verktøy for å lage oppgaver til bruk i undervisningen av deg og andre lærere.
+                        Husk at det er andre lærere som vil se oppgavene dine slik at de ikke trenger å være rettet mot elevene nå.
+                    </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
+                        Oppgavebyggeren lar deg lage oppgaver som er tilpasset trinn, kompetansemål og utstyr som elevene trenger for å utføre oppgaven.
+                        Oppgaven din kan også være koblet mot dine andre oppgaver som forrige og neste nivå dersom du ønsker en progresjon.
+                        Oppgavebyggeren er lagd for å være veiledende og finner lignende oppgaver fra vår database for deg når klassenivå, kompetansemål og utstyr er definert.
+                        Du kan enten åpne oppgavesidene for disse oppgavene for inspirasjon, eller du kan importere oppgaven inn i din oppgavebygger for å modifisere oppgaven slik at den passer deg
+                    </Typography>
+                </Box>
+            </Modal>
         </Box >
     );
 }
