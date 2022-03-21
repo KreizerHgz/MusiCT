@@ -1,7 +1,7 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Card, CardActionArea, CardContent, Divider, FormControl, Grid, List, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
