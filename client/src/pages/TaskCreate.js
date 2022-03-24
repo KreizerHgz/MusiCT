@@ -85,7 +85,7 @@ export default function TaskCreate() {
     }, [submitted, navigate]);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchusertasks', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchusertasks', {
             userID: value
         }).then((response) => {
             console.log(response.data);
@@ -104,7 +104,7 @@ export default function TaskCreate() {
     }, [succeedes, preceedes]);
 
     const save = () => {
-        Axios.post('http://localhost:3001/submittask', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/submittask', {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,
@@ -121,7 +121,7 @@ export default function TaskCreate() {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = (e) => {
-        Axios.post('http://localhost:3001/fetchwikipage', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchwikipage', {
             title: e
         }).then((response) => {
             console.log(response.data);
@@ -140,7 +140,7 @@ export default function TaskCreate() {
     const handleCloseSimilar = () => setOpenSimilar(false);
 
     const findTasks = () => {
-        Axios.post('http://localhost:3001/fetchsimilartasks', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchsimilartasks', {
             learningObjective: learningObjective,
             equipment: equipment
         }).then((response) => {

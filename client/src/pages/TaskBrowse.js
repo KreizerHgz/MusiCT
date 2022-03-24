@@ -11,7 +11,7 @@ export default function TaskBrowse() {
     const [taskList, setTaskList] = useState(null);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchtasks', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchtasks', {
         }).then((response) => {
             console.log(response.data);
             if (response.data.message) {

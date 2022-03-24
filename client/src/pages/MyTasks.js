@@ -15,7 +15,7 @@ export default function MyTasks() {
     let navigate = useNavigate();
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchmytasks', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchmytasks', {
             userID: value
         }).then((response) => {
             console.log(response.data);
@@ -30,7 +30,7 @@ export default function MyTasks() {
 
     const deleteTask = (e) => {
         console.log(e);
-        Axios.post('http://localhost:3001/deletetask', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/deletetask', {
             taskID: e.TaskID
         }).then((response) => {
             navigate("/mineoppgaver");

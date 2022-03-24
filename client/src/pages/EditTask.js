@@ -82,7 +82,7 @@ export default function EditTask() {
     }, [submitted, navigate]);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchmytasks', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchmytasks', {
             userID: value
         }).then((response) => {
             if (response.data.message) {
@@ -107,7 +107,7 @@ export default function EditTask() {
 
 
     const save = () => {
-        Axios.post('http://localhost:3001/updatetask', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/updatetask', {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,
@@ -122,7 +122,7 @@ export default function EditTask() {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = (e) => {
-        Axios.post('http://localhost:3001/fetchwikipage', {
+        Axios.post('https://musict-deployment-test.herokuapp.com/fetchwikipage', {
             title: e
         }).then((response) => {
             console.log(response.data);

@@ -7,10 +7,10 @@ app.use(express.json());
 app.use(cors());
 
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'musict'
+    host: 'eu-cdbr-west-02.cleardb.net',
+    user: 'b7fea7802ebe46',
+    password: '45ad4e1e',
+    database: 'heroku_0a8fe2c4238adde'
 });
 
 app.post('/register', (req, res) => {
@@ -249,8 +249,8 @@ app.post('/deletetask', (req, res) => {
 })
 
 
-app.listen(3001, () => {
-    console.log("All good!");
+app.listen(process.env.PORT || 3000, () => {
+    console.log(`Running`);
 });
 
 //Make sure server is running okay
