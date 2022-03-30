@@ -1,7 +1,7 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Card, CardActionArea, CardContent, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, Checkbox, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
@@ -52,6 +52,7 @@ export default function TaskCreate() {
     const [grade, setGrade] = useState("");
     const [learningObjective, setLearningObjective] = useState("");
     const [equipment, setEquipment] = useState("");
+    const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [succeedes, setSucceedes] = useState(null);
@@ -108,6 +109,7 @@ export default function TaskCreate() {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,
+            CT: CT,
             title: title,
             description: description,
             createdBy: value,
@@ -142,7 +144,8 @@ export default function TaskCreate() {
     const findTasks = () => {
         Axios.post('http://localhost:3001/fetchsimilartasks', {
             learningObjective: learningObjective,
-            equipment: equipment
+            equipment: equipment,
+            CT: CT
         }).then((response) => {
             console.log(response.data);
             if (response.data.message) {
@@ -166,6 +169,21 @@ export default function TaskCreate() {
     const handleCloseCreatorInfo = () => setOpenCreatorInfo(false);
     const handleOpenCreatorInfo = () => setOpenCreatorInfo(true);
 
+    const updateCT = (e) => {
+        setCT(
+            typeof e === 'string' ? e.split(',') : e,
+        );
+        console.log(CT);
+    }
+
+    const CTmethods = [
+        ["Logikk", 1],
+        ["Algoritmer", 2],
+        ["Dekomposisjon", 3],
+        ["Mønstre", 4],
+        ["Abstraksjon", 5],
+        ["Evaluering", 6]
+    ];
 
     return (
         <Box height={"100vh"} overflow="auto">
@@ -197,7 +215,7 @@ export default function TaskCreate() {
                         <FormControl >
                             <TextField
                                 value={grade}
-                                label="Klassenivå"
+                                label="Klassenivå*"
                                 onChange={(e) => { setGrade(e.target.value) }}
                                 className={classes.root}
                                 select
@@ -216,7 +234,7 @@ export default function TaskCreate() {
                         <FormControl >
                             <TextField
                                 value={learningObjective}
-                                label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål")}
+                                label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål*")}
                                 onChange={(e) => { setLearningObjective(e.target.value) }}
                                 className={classes.root}
                                 disabled={!(gradeDefined)}
@@ -347,7 +365,7 @@ export default function TaskCreate() {
                         <FormControl >
                             <TextField
                                 value={equipment}
-                                label="Utstyr/Plattform"
+                                label="Utstyr/Plattform*"
                                 onChange={(e) => { setEquipment(e.target.value) }}
                                 className={classes.root}
                                 select
@@ -457,9 +475,32 @@ export default function TaskCreate() {
                             </TextField>
                         </FormControl>
                     </Grid>
+                    <Grid item xs={2}>
+                        <FormControl >
+                            <TextField
+                                label="AT metode*"
+                                className={classes.root}
+                                select
+                                SelectProps={{
+                                    classes: { icon: classes.icon },
+                                    multiple: true,
+                                    value: CT,
+                                    onChange: (e) => { updateCT(e.target.value) },
+                                    renderValue: (selected) => selected.join(", ")
+                                }}
+                            >
+                                {CTmethods.map((item) => (
+                                    <MenuItem key={item[0]} value={item[0]}>
+                                        <Checkbox checked={CT.indexOf(item[0]) > -1} />
+                                        {item[0]}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
+                        </FormControl>
+                    </Grid>
                 </Grid>
             </Grid>
-            {learningObjective !== "" && equipment !== "" ? (
+            {(learningObjective !== "" && equipment !== "" && CT.length > 0) ? (
                 <div>
                     <Button variant="contained" onClick={findTasks}>
                         Finn lignende oppgaver
@@ -589,6 +630,10 @@ export default function TaskCreate() {
                                                         <Typography align="left" variant="body2" color="text.secondary">
                                                             Utstyr/Plattform: {element.Equipment}
                                                         </Typography>
+                                                        <Divider sx={{ borderBottomWidth: 3 }} />
+                                                        <Typography align="left" variant="body2" color="text.secondary">
+                                                            AT Metode(r): {element.CT}
+                                                        </Typography>
                                                     </CardContent>
                                                 </CardActionArea>
                                             </Card>
@@ -624,7 +669,8 @@ export default function TaskCreate() {
                         Oppgavebyggeren lar deg lage oppgaver som er tilpasset trinn, kompetansemål og utstyr som elevene trenger for å utføre oppgaven.
                         Oppgaven din kan også være koblet mot dine andre oppgaver som forrige og neste nivå dersom du ønsker en progresjon.
                         Oppgavebyggeren er lagd for å være veiledende og finner lignende oppgaver fra vår database for deg når klassenivå, kompetansemål og utstyr er definert.
-                        Du kan enten åpne oppgavesidene for disse oppgavene for inspirasjon, eller du kan importere oppgaven inn i din oppgavebygger for å modifisere oppgaven slik at den passer deg
+                        Du kan enten åpne oppgavesidene for disse oppgavene for inspirasjon, eller du kan importere oppgaven inn i din oppgavebygger for å modifisere oppgaven slik at den passer deg.
+                        Felter markert med * må fylles ut for at oppgaven kan lagres
                     </Typography>
                 </Box>
             </Modal>

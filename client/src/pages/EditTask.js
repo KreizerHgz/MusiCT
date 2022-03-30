@@ -1,7 +1,7 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
@@ -46,11 +46,14 @@ const useStyles = makeStyles({
     },
 });
 
+
+
 export default function EditTask() {
 
     const [grade, setGrade] = useState("");
     const [learningObjective, setLearningObjective] = useState("");
     const [equipment, setEquipment] = useState("");
+    const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
 
@@ -61,6 +64,17 @@ export default function EditTask() {
 
     const { value } = useContext(UserContext);
     const path = window.location.pathname.split("/")[2]
+
+    const [CTmethods, setCTmethods] = useState([]);
+
+    const CTfull = [
+        "Logikk",
+        "Algoritmer",
+        "Dekomposisjon",
+        "Mønstre",
+        "Abstraksjon",
+        "Evaluering"
+    ];
 
     useEffect(() => {
         if (grade === "") {
@@ -99,18 +113,31 @@ export default function EditTask() {
                         setEquipment(t[0].Equipment);
                         setTitle(t[0].Title);
                         setDescription(t[0].Description);
+                        setCT(t[0].CT.split(", "))
                     }
                 }
             }
         })
     }, []);
 
+    useEffect(() => {
+        console.log(CT)
+        const a = [];
+        for (const entry of CTfull) {
+            if (!CT.includes(entry)) {
+                a.push(entry);
+            }
+        }
+        console.log(a);
+        setCTmethods(a);
+    }, [CT])
 
     const save = () => {
         Axios.post('http://localhost:3001/updatetask', {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,
+            CT: CT,
             title: title,
             description: description,
             taskID: path
@@ -136,6 +163,12 @@ export default function EditTask() {
         setOpen(true);
     }
 
+    const updateCT = (e) => {
+        setCT(
+            typeof e === 'string' ? e.split(',') : e,
+        );
+        console.log(CT);
+    }
 
     return (
         <Box height={"100vh"} overflow="auto">
@@ -421,6 +454,41 @@ export default function EditTask() {
                                     </MenuItem>
                                 )}
                                 <MenuItem value={"Ekstra utstyr ikke nødvendig"}>Ekstra utstyr ikke nødvendig</MenuItem>
+                            </TextField>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <FormControl >
+                            <TextField
+                                label="AT metode*"
+                                className={classes.root}
+                                select
+                                SelectProps={{
+                                    classes: { icon: classes.icon },
+                                    multiple: true,
+                                    value: CT,
+                                    onChange: (e) => { updateCT(e.target.value) },
+                                    renderValue: (selected) => selected.join(", ")
+                                }}
+                            >
+                                {CT.length > 0 ? (
+                                    CT.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={true} />
+                                            {item}
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {CT.length > 0 ? (
+                                    CTmethods.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={false} />
+                                            {item}
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                             </TextField>
                         </FormControl>
                     </Grid>

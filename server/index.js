@@ -44,6 +44,7 @@ app.post('/submittask', (req, res) => {
     const grade = req.body.grade
     const learningObjective = req.body.learningObjective
     const equipment = req.body.equipment
+    const CT = req.body.CT.join(", ")
     const title = req.body.title
     const description = req.body.description
     const createdBy = req.body.createdBy
@@ -51,26 +52,26 @@ app.post('/submittask', (req, res) => {
         const succeedes = req.body.succeedes
         const preceedes = req.body.preceedes
 
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Succeedes, Preceedes) VALUES (?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, succeedes, preceedes], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, CreatedBy, Succeedes, Preceedes) VALUES (?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, createdBy, succeedes, preceedes], (err, result) => {
             console.log(err);
         })
     }
     else if (!req.body.succeedes && req.body.preceedes) {
         const preceedes = req.body.preceedes
 
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Preceedes) VALUES (?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, preceedes], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, CreatedBy, Preceedes) VALUES (?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, createdBy, preceedes], (err, result) => {
             console.log(err);
         })
     }
     else if (req.body.succeedes && !req.body.preceedes) {
         const succeedes = req.body.succeedes
 
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy, Succeedes) VALUES (?,?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy, succeedes], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, CreatedBy, Succeedes) VALUES (?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, createdBy, succeedes], (err, result) => {
             console.log(err);
         })
     }
     else {
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, Title, Description, CreatedBy) VALUES (?,?,?,?,?,?)", [grade, learningObjective, equipment, title, description, createdBy], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, CreatedBy) VALUES (?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, createdBy], (err, result) => {
             console.log(err);
         })
     }
@@ -208,8 +209,9 @@ app.post('/fetchsimilartasks', (req, res) => {
 
     const learningObjective = req.body.learningObjective
     const equipment = req.body.equipment
+    const CT = req.body.CT.join(", ")
 
-    db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ?", [learningObjective, equipment], (err, result) => {
+    db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ? AND CT = ?", [learningObjective, equipment, CT], (err, result) => {
         if (err) {
             res.send({ err: err });
         }
@@ -226,11 +228,12 @@ app.post('/updatetask', (req, res) => {
     const grade = req.body.grade
     const learningObjective = req.body.learningObjective
     const equipment = req.body.equipment
+    const CT = req.body.CT.join(", ")
     const title = req.body.title
     const description = req.body.description
     const taskID = req.body.taskID
 
-    db.query("UPDATE task SET Grade = ?, LearningObjective = ?, Equipment = ?, Title = ?, Description = ? WHERE TaskID = ?", [grade, learningObjective, equipment, title, description, taskID], (err, result) => {
+    db.query("UPDATE task SET Grade = ?, LearningObjective = ?, Equipment = ?, CT = ?, Title = ?, Description = ? WHERE TaskID = ?", [grade, learningObjective, equipment, CT, title, description, taskID], (err, result) => {
         if (err) {
             res.send({ err: err });
         }

@@ -63,6 +63,10 @@ export default function MyTasks() {
                                         <Typography align="left" variant="body2" color="text.secondary">
                                             Utstyr/Plattform: {element.Equipment}
                                         </Typography>
+                                        <Divider sx={{ borderBottomWidth: 3 }} />
+                                        <Typography align="left" variant="body2" color="text.secondary">
+                                            AT Metode(r): {element.CT}
+                                        </Typography>
                                     </CardContent>
                                 </Card>
                                 <div>

@@ -57,10 +57,17 @@ export default function Task() {
                                 Kompetansemål: {taskData.LearningObjective}
                             </Typography>
                             <Divider width={500} />
-                            <Typography align={"left"} color="text.secondary">
+                            <Typography align={"left"} color="text.secondary" maxWidth={500}>
                                 Utstyr/Plattform: {taskData.Equipment}
                             </Typography>
+                            <Divider width={500} />
+                            <Typography align={"left"} color="text.secondary" maxWidth={500}>
+                                AT Metode(r): {taskData.CT}
+                            </Typography>
                             <Typography align={"left"} color="text.secondary" marginTop="70px">
+                                Oppgavebeskrivelse
+                            </Typography>
+                            <Typography align={"left"} color="text.secondary" marginTop="5px">
                                 {taskData.Description}
                             </Typography>
                         </div>
