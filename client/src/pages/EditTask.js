@@ -52,7 +52,7 @@ export default function EditTask() {
 
     const [grade, setGrade] = useState("");
     const [learningObjective, setLearningObjective] = useState("");
-    const [equipment, setEquipment] = useState("");
+    const [equipment, setEquipment] = useState([]);
     const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -65,7 +65,19 @@ export default function EditTask() {
     const { value } = useContext(UserContext);
     const path = window.location.pathname.split("/")[2]
 
+    const [EquipOptions, setEquipOptions] = useState([]);
     const [CTmethods, setCTmethods] = useState([]);
+
+    const Equipfull = [
+        "Instrument - Gitar",
+        "Instrument - Piano",
+        "Instrument - Slagverk",
+        "Scratch",
+        "Sonic Pi",
+        "Arduino",
+        "Digital Audio Workstation",
+        "Ekstra utstyr ikke nødvendig"
+    ]
 
     const CTfull = [
         "Logikk",
@@ -110,10 +122,10 @@ export default function EditTask() {
                         console.log(t);
                         setGrade(t[0].Grade);
                         setLearningObjective(t[0].LearningObjective);
-                        setEquipment(t[0].Equipment);
+                        setEquipment(t[0].Equipment.split(", "));
+                        setCT(t[0].CT.split(", "));
                         setTitle(t[0].Title);
                         setDescription(t[0].Description);
-                        setCT(t[0].CT.split(", "))
                     }
                 }
             }
@@ -121,14 +133,24 @@ export default function EditTask() {
     }, []);
 
     useEffect(() => {
-        console.log(CT)
+        console.log(equipment)
+        const a = [];
+        for (const entry of Equipfull) {
+            if (!equipment.includes(entry)) {
+                a.push(entry);
+            }
+        }
+        console.log(a);
+        setEquipOptions(a);
+    }, [equipment])
+
+    useEffect(() => {
         const a = [];
         for (const entry of CTfull) {
             if (!CT.includes(entry)) {
                 a.push(entry);
             }
         }
-        console.log(a);
         setCTmethods(a);
     }, [CT])
 
@@ -163,11 +185,17 @@ export default function EditTask() {
         setOpen(true);
     }
 
+    const updateEq = (e) => {
+        setEquipment(
+            typeof e === 'string' ? e.split(',') : e,
+        );
+    }
+
+
     const updateCT = (e) => {
         setCT(
             typeof e === 'string' ? e.split(',') : e,
         );
-        console.log(CT);
     }
 
     return (
@@ -346,114 +374,35 @@ export default function EditTask() {
                     <Grid item xs={2}>
                         <FormControl >
                             <TextField
-                                value={equipment}
-                                label="Utstyr/Plattform"
-                                onChange={(e) => { setEquipment(e.target.value) }}
+                                label="Utstyr/Pattform*"
                                 className={classes.root}
                                 select
                                 SelectProps={{
-                                    classes: { icon: classes.icon }
+                                    classes: { icon: classes.icon },
+                                    multiple: true,
+                                    value: equipment,
+                                    onChange: (e) => { updateEq(e.target.value) },
+                                    renderValue: (selected) => selected.join(", ")
                                 }}
                             >
-                                {equipment !== "Instrument - Gitar" ? (
-                                    <MenuItem value={"Instrument - Gitar"}>
-                                        <ListItemText>
-                                            Instrument - Gitar
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Gitar") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Instrument - Gitar"}>
-                                        Instrument - Gitar
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Instrument - Piano" ? (
-                                    <MenuItem value={"Instrument - Piano"}>
-                                        <ListItemText>
-                                            Instrument - Piano
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Piano") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Instrument - Piano"}>
-                                        Instrument - Piano
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Instrument - Slagverk" ? (
-                                    <MenuItem value={"Instrument - Slagverk"}>
-                                        <ListItemText>
-                                            Instrument - Slagverk
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Slagverk") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Instrument - Slagverk"}>
-                                        Instrument - Slagverk
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Scratch" ? (
-                                    <MenuItem value={"Scratch"}>
-                                        <ListItemText>
-                                            Scratch
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Scratch") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Scratch"}>
-                                        Scratch
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Sonic Pi" ? (
-                                    <MenuItem value={"Sonic Pi"}>
-                                        <ListItemText>
-                                            Sonic Pi
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Sonic Pi") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Sonic Pi"}>
-                                        Sonic Pi
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Arduino" ? (
-                                    <MenuItem value={"Arduino"}>
-                                        <ListItemText>
-                                            Arduino
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Arduino") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Arduino"}>
-                                        Arduino
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Digital Audio Workstation" ? (
-                                    <MenuItem value={"Digital Audio Workstation"}>
-                                        <ListItemText>
-                                            Digital Audio Workstation
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Digital Audio Workstation") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Digital Audio Workstation"}>
-                                        Digital Audio Workstation
-                                    </MenuItem>
-                                )}
-                                <MenuItem value={"Ekstra utstyr ikke nødvendig"}>Ekstra utstyr ikke nødvendig</MenuItem>
+                                {equipment.length > 0 ? (
+                                    equipment.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={true} />
+                                            {item}
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {equipment.length > 0 ? (
+                                    EquipOptions.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={false} />
+                                            {item}
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                             </TextField>
                         </FormControl>
                     </Grid>

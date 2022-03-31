@@ -51,7 +51,7 @@ export default function TaskCreate() {
 
     const [grade, setGrade] = useState("");
     const [learningObjective, setLearningObjective] = useState("");
-    const [equipment, setEquipment] = useState("");
+    const [equipment, setEquipment] = useState([]);
     const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -169,20 +169,35 @@ export default function TaskCreate() {
     const handleCloseCreatorInfo = () => setOpenCreatorInfo(false);
     const handleOpenCreatorInfo = () => setOpenCreatorInfo(true);
 
+    const updateEq = (e) => {
+        setEquipment(
+            typeof e === 'string' ? e.split(',') : e,
+        );
+    }
+
     const updateCT = (e) => {
         setCT(
             typeof e === 'string' ? e.split(',') : e,
         );
-        console.log(CT);
     }
 
+    const Equip = [
+        "Instrument - Gitar",
+        "Instrument - Piano",
+        "Instrument - Slagverk",
+        "Scratch",
+        "Sonic Pi",
+        "Arduino",
+        "Digital Audio Workstation"
+    ]
+
     const CTmethods = [
-        ["Logikk", 1],
-        ["Algoritmer", 2],
-        ["Dekomposisjon", 3],
-        ["Mønstre", 4],
-        ["Abstraksjon", 5],
-        ["Evaluering", 6]
+        "Logikk",
+        "Algoritmer",
+        "Dekomposisjon",
+        "Mønstre",
+        "Abstraksjon",
+        "Evaluering"
     ];
 
     return (
@@ -364,114 +379,34 @@ export default function TaskCreate() {
                     <Grid item xs={2}>
                         <FormControl >
                             <TextField
-                                value={equipment}
                                 label="Utstyr/Plattform*"
-                                onChange={(e) => { setEquipment(e.target.value) }}
                                 className={classes.root}
                                 select
                                 SelectProps={{
-                                    classes: { icon: classes.icon }
+                                    classes: { icon: classes.icon },
+                                    multiple: true,
+                                    value: equipment,
+                                    onChange: (e) => { updateEq(e.target.value) },
+                                    renderValue: (selected) => selected.join(", ")
                                 }}
                             >
-                                {equipment !== "Instrument - Gitar" ? (
-                                    <MenuItem value={"Instrument - Gitar"}>
+                                {Equip.map((item) => (
+                                    <MenuItem key={item} value={item}>
+                                        <Checkbox checked={equipment.indexOf(item) > -1} />
                                         <ListItemText>
-                                            Instrument - Gitar
+                                            {item}
                                         </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Gitar") }}>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen(item) }}>
                                             <HelpOutlineIcon />
                                         </Button>
                                     </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Instrument - Gitar"}>
-                                        Instrument - Gitar
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Instrument - Piano" ? (
-                                    <MenuItem value={"Instrument - Piano"}>
-                                        <ListItemText>
-                                            Instrument - Piano
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Piano") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Instrument - Piano"}>
-                                        Instrument - Piano
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Instrument - Slagverk" ? (
-                                    <MenuItem value={"Instrument - Slagverk"}>
-                                        <ListItemText>
-                                            Instrument - Slagverk
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Instrument - Slagverk") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Instrument - Slagverk"}>
-                                        Instrument - Slagverk
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Scratch" ? (
-                                    <MenuItem value={"Scratch"}>
-                                        <ListItemText>
-                                            Scratch
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Scratch") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Scratch"}>
-                                        Scratch
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Sonic Pi" ? (
-                                    <MenuItem value={"Sonic Pi"}>
-                                        <ListItemText>
-                                            Sonic Pi
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Sonic Pi") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Sonic Pi"}>
-                                        Sonic Pi
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Arduino" ? (
-                                    <MenuItem value={"Arduino"}>
-                                        <ListItemText>
-                                            Arduino
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Arduino") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Arduino"}>
-                                        Arduino
-                                    </MenuItem>
-                                )}
-                                {equipment !== "Digital Audio Workstation" ? (
-                                    <MenuItem value={"Digital Audio Workstation"}>
-                                        <ListItemText>
-                                            Digital Audio Workstation
-                                        </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen("Digital Audio Workstation") }}>
-                                            <HelpOutlineIcon />
-                                        </Button>
-                                    </MenuItem>
-                                ) : (
-                                    <MenuItem value={"Digital Audio Workstation"}>
-                                        Digital Audio Workstation
-                                    </MenuItem>
-                                )}
-                                <MenuItem value={"Ekstra utstyr ikke nødvendig"}>Ekstra utstyr ikke nødvendig</MenuItem>
+                                ))}
+                                <MenuItem key={"Ekstra utstyr ikke nødvendig"} value={"Ekstra utstyr ikke nødvendig"}>
+                                    <Checkbox checked={equipment.indexOf("Ekstra utstyr ikke nødvendig") > -1} />
+                                    <ListItemText>
+                                        {"Ekstra utstyr ikke nødvendig"}
+                                    </ListItemText>
+                                </MenuItem>
                             </TextField>
                         </FormControl>
                     </Grid>
@@ -490,12 +425,12 @@ export default function TaskCreate() {
                                 }}
                             >
                                 {CTmethods.map((item) => (
-                                    <MenuItem key={item[0]} value={item[0]}>
-                                        <Checkbox checked={CT.indexOf(item[0]) > -1} />
+                                    <MenuItem key={item} value={item}>
+                                        <Checkbox checked={CT.indexOf(item) > -1} />
                                         <ListItemText>
-                                            {item[0]}
+                                            {item}
                                         </ListItemText>
-                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen(item[0]) }}>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen(item) }}>
                                             <HelpOutlineIcon />
                                         </Button>
                                     </MenuItem>

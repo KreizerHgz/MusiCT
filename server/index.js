@@ -43,7 +43,7 @@ app.post('/login', (req, res) => {
 app.post('/submittask', (req, res) => {
     const grade = req.body.grade
     const learningObjective = req.body.learningObjective
-    const equipment = req.body.equipment
+    const equipment = req.body.equipment.join(", ")
     const CT = req.body.CT.join(", ")
     const title = req.body.title
     const description = req.body.description
@@ -208,7 +208,7 @@ app.post('/fetchwikipage', (req, res) => {
 app.post('/fetchsimilartasks', (req, res) => {
 
     const learningObjective = req.body.learningObjective
-    const equipment = req.body.equipment
+    const equipment = req.body.equipment.join(", ")
     const CT = req.body.CT.join(", ")
 
     db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ? AND CT = ?", [learningObjective, equipment, CT], (err, result) => {
@@ -227,7 +227,7 @@ app.post('/updatetask', (req, res) => {
 
     const grade = req.body.grade
     const learningObjective = req.body.learningObjective
-    const equipment = req.body.equipment
+    const equipment = req.body.equipment.join(", ")
     const CT = req.body.CT.join(", ")
     const title = req.body.title
     const description = req.body.description
