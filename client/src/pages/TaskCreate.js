@@ -492,7 +492,12 @@ export default function TaskCreate() {
                                 {CTmethods.map((item) => (
                                     <MenuItem key={item[0]} value={item[0]}>
                                         <Checkbox checked={CT.indexOf(item[0]) > -1} />
-                                        {item[0]}
+                                        <ListItemText>
+                                            {item[0]}
+                                        </ListItemText>
+                                        <Button onClick={(e) => { e.stopPropagation(); handleOpen(item[0]) }}>
+                                            <HelpOutlineIcon />
+                                        </Button>
                                     </MenuItem>
                                 ))}
                             </TextField>
