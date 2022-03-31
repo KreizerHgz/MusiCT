@@ -42,7 +42,7 @@ app.post('/login', (req, res) => {
 
 app.post('/submittask', (req, res) => {
     const grade = req.body.grade
-    const learningObjective = req.body.learningObjective
+    const learningObjective = req.body.learningObjective.join("| ")
     const equipment = req.body.equipment.join(", ")
     const CT = req.body.CT.join(", ")
     const title = req.body.title
@@ -207,7 +207,7 @@ app.post('/fetchwikipage', (req, res) => {
 
 app.post('/fetchsimilartasks', (req, res) => {
 
-    const learningObjective = req.body.learningObjective
+    const learningObjective = req.body.learningObjective.join("| ")
     const equipment = req.body.equipment.join(", ")
     const CT = req.body.CT.join(", ")
 
@@ -226,7 +226,7 @@ app.post('/fetchsimilartasks', (req, res) => {
 app.post('/updatetask', (req, res) => {
 
     const grade = req.body.grade
-    const learningObjective = req.body.learningObjective
+    const learningObjective = req.body.learningObjective.join("| ")
     const equipment = req.body.equipment.join(", ")
     const CT = req.body.CT.join(", ")
     const title = req.body.title

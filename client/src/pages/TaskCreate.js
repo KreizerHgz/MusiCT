@@ -50,7 +50,7 @@ const useStyles = makeStyles({
 export default function TaskCreate() {
 
     const [grade, setGrade] = useState("");
-    const [learningObjective, setLearningObjective] = useState("");
+    const [learningObjective, setLearningObjective] = useState([]);
     const [equipment, setEquipment] = useState([]);
     const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
@@ -72,6 +72,7 @@ export default function TaskCreate() {
         }
         else {
             setGradeDefined(true);
+            setLearningObjective([]);
         }
     }, [grade, gradeDefined]);
 
@@ -169,6 +170,12 @@ export default function TaskCreate() {
     const handleCloseCreatorInfo = () => setOpenCreatorInfo(false);
     const handleOpenCreatorInfo = () => setOpenCreatorInfo(true);
 
+    const updateLO = (e) => {
+        setLearningObjective(
+            typeof e === 'string' ? e.split('|') : e,
+        );
+    }
+
     const updateEq = (e) => {
         setEquipment(
             typeof e === 'string' ? e.split(',') : e,
@@ -180,6 +187,46 @@ export default function TaskCreate() {
             typeof e === 'string' ? e.split(',') : e,
         );
     }
+
+    const LOSet1 = [
+        "utøve et repertoar av sangleker, sanger og danser hentet fra elevenes nære musikkultur og fra kulturarven",
+        "utforske og eksperimentere med puls, rytme, tempo, klang, melodi, dynamikk, harmoni og form i dans, med stemmen og i spill på instrumenter",
+        "leke med musikkens grunnelementer gjennom lyd og stemme, lage mønstre og sette sammen mønstrene til enkle improvisasjoner og komposisjoner, også med digitale verktøy",
+        "formidle opplevelser av ulike musikalske uttrykk gjennom samtale og kunstneriske uttrykksformer"
+    ];
+
+    const LOSet2 = [
+        "utøve og utforske et repertoar av sanger og danser fra ulike musikkulturer, inkludert samisk musikkultur",
+        "synge og spille på instrumenter alene og sammen med andre ved bruk av gehør og enkel notasjon",
+        "eksperimentere med rytmer, melodier og andre grunnelementer, sette sammen mønstre til komposisjoner, også ved bruk av digitale verktøy, og beskrive arbeidsprosesser og resultater",
+        "formidle egne musikkopplevelser og beskrive bruk av musikalske virkemidler ved hjelp av enkle fagbegreper",
+        "samtale om og reflektere over hvordan musikk skaper mening når den brukes i ulike sosiale sammenhenger"
+    ];
+
+    const LOSet3 = [
+        "utøve et repertoar av musikk, sang, andre vokale uttrykk og dans fra samtiden og historien",
+        "utforske og drøfte hvordan musikk fra fortiden påvirker dagens musikk",
+        "øve inn og framføre sang og musikk, i samspill eller individuelt, gehørbasert og ved bruk av enkle notasjonsteknikker",
+        "lytte, eksperimentere og skape nye uttrykk med instrumenter, kropp, stemme eller lyd fra andre kilder, og presentere resultatet",
+        "bruke teknologi og digitale verktøy til å skape, øve inn og bearbeide musikk",
+        "bruke fagbegreper i beskrivelse av og refleksjon over arbeidsprosesser, resultater, musikalske uttrykk og virkemidler",
+        "utforske og formidle musikalske opplevelser og erfaringer",
+        "undersøke hvordan kjønn, kjønnsroller og seksualitet fremstilles i musikk og dans i det offentlige rom, og skape uttrykk som utfordrer stereotypier",
+        "reflektere over hvordan musikk kan spille ulike roller for utvikling av individer og gruppers identitet"
+    ];
+
+    const LOSet4 = [
+        "utøve et variert repertoar av musikk, sang, andre vokale uttrykk og dans",
+        "reflektere over hvordan musikalske tradisjoner, inkludert samiske musikktradisjoner, bevares og fornyes",
+        "samarbeide med andre om å planlegge og gjennomføre øvingsprosesser hvor det inngår selvvalgt sang, andre vokale uttrykk, spill på instrumenter eller dans, og formidle resultatet i gruppe eller individuelt",
+        "skape og programmere musikalske forløp ved å eksperimentere med lyd fra ulike kilder",
+        "utforske og formidle musikalske opplevelser og erfaringer, og reflektere over bruk av musikalske virkemidler",
+        "lytte og prøve ut ulike uttrykk og begrunne valg i skapende prosesser fra idé til ferdig resultat",
+        "bruke gehør og notasjonsteknikker som støtte i skapende arbeid",
+        "bruke relevante fagbegreper i skapende arbeid og i refleksjon over prosesser og resultater",
+        "utforske og reflektere over hvordan musikk, sang og dans som estetiske uttrykk er påvirket av og uttrykk for historiske og samfunnsmessige forhold, og skape musikalske uttrykk som tar opp utfordringer i samtiden",
+        "utforske og drøfte musikkens og dansens betydning i samfunnet og etiske problemstillinger knyttet til musikalske ytringer og musikkulturer"
+    ];
 
     const Equip = [
         "Instrument - Gitar",
@@ -248,131 +295,62 @@ export default function TaskCreate() {
                     <Grid item xs={2}>
                         <FormControl >
                             <TextField
-                                value={learningObjective}
                                 label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål*")}
-                                onChange={(e) => { setLearningObjective(e.target.value) }}
-                                className={classes.root}
                                 disabled={!(gradeDefined)}
+                                className={classes.root}
                                 select
                                 SelectProps={{
-                                    classes: { icon: classes.icon }
+                                    classes: { icon: classes.icon },
+                                    multiple: true,
+                                    value: learningObjective,
+                                    onChange: (e) => { updateLO(e.target.value) },
+                                    renderValue: (selected) => selected.join("| ")
                                 }}
                             >
                                 {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Utøve et repertoar av sangleker, sanger og danser hentet fra elevenes nære musikkultur og fra kulturarven"}>
-                                        Utøve et repertoar av sangleker, sanger og danser hentet fra elevenes nære musikkultur og fra kulturarven</MenuItem>
-                                ) : []}
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Utforske og eksperimentere med puls, rytme, tempo, klang, melodi, dynamikk, harmoni og form i dans, med stemmen og i spill på instrumenter"}>
-                                        Utforske og eksperimentere med puls, rytme, tempo, klang, melodi, dynamikk, harmoni og form i dans, med stemmen og i spill på instrumenter</MenuItem>
-                                ) : []}
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Leke med musikkens grunnelementer gjennom lyd og stemme, lage mønstre og sette sammen mønstrene til enkle improvisasjoner og komposisjoner, også med digitale verktøy"}>
-                                        Leke med musikkens grunnelementer gjennom lyd og stemme, lage mønstre og sette sammen mønstrene til enkle improvisasjoner og komposisjoner, også med digitale verktøy</MenuItem>
-                                ) : []}
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Formidle opplevelser av ulike musikalske uttrykk gjennom samtale og kunstneriske uttrykksformer"}>
-                                        Formidle opplevelser av ulike musikalske uttrykk gjennom samtale og kunstneriske uttrykksformer</MenuItem>
-                                ) : []}
-
+                                    LOSet1.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                                 {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Utøve og utforske et repertoar av sanger og danser fra ulike musikkulturer, inkludert samisk musikkultur"}>
-                                        Utøve og utforske et repertoar av sanger og danser fra ulike musikkulturer, inkludert samisk musikkultur</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Synge og spille på instrumenter alene og sammen med andre ved bruk av gehør og enkel notasjon"}>
-                                        Synge og spille på instrumenter alene og sammen med andre ved bruk av gehør og enkel notasjon</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Eksperimentere med rytmer, melodier og andre grunnelementer, sette sammen mønstre til komposisjoner, også ved bruk av digitale verktøy, og beskrive arbeidsprosesser og resultater"}>
-                                        Eksperimentere med rytmer, melodier og andre grunnelementer, sette sammen mønstre til komposisjoner, også ved bruk av digitale verktøy, og beskrive arbeidsprosesser og resultater</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Formidle egne musikkopplevelser og beskrive bruk av musikalske virkemidler ved hjelp av enkle fagbegreper"}>
-                                        Formidle egne musikkopplevelser og beskrive bruk av musikalske virkemidler ved hjelp av enkle fagbegreper</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Samtale om og reflektere over hvordan musikk skaper mening når den brukes i ulike sosiale sammenhenger"}>
-                                        Samtale om og reflektere over hvordan musikk skaper mening når den brukes i ulike sosiale sammenhenger</MenuItem>
-                                ) : []}
-
+                                    LOSet2.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                                 {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Utøve et repertoar av musikk, sang, andre vokale uttrykk og dans fra samtiden og historien"}>
-                                        Utøve et repertoar av musikk, sang, andre vokale uttrykk og dans fra samtiden og historien</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Utforske og drøfte hvordan musikk fra fortiden påvirker dagens musikk"}>
-                                        Utforske og drøfte hvordan musikk fra fortiden påvirker dagens musikk</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Øve inn og framføre sang og musikk, i samspill eller individuelt, gehørbasert og ved bruk av enkle notasjonsteknikker"}>
-                                        Øve inn og framføre sang og musikk, i samspill eller individuelt, gehørbasert og ved bruk av enkle notasjonsteknikker</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Lytte, eksperimentere og skape nye uttrykk med instrumenter, kropp, stemme eller lyd fra andre kilder, og presentere resultatet"}>
-                                        Lytte, eksperimentere og skape nye uttrykk med instrumenter, kropp, stemme eller lyd fra andre kilder, og presentere resultatet</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Bruke teknologi og digitale verktøy til å skape, øve inn og bearbeide musikk"}>
-                                        Bruke teknologi og digitale verktøy til å skape, øve inn og bearbeide musikk</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Bruke fagbegreper i beskrivelse av og refleksjon over arbeidsprosesser, resultater, musikalske uttrykk og virkemidler"}>
-                                        Bruke fagbegreper i beskrivelse av og refleksjon over arbeidsprosesser, resultater, musikalske uttrykk og virkemidler</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Utforske og formidle musikalske opplevelser og erfaringer"}>
-                                        Utforske og formidle musikalske opplevelser og erfaringer</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Undersøke hvordan kjønn, kjønnsroller og seksualitet fremstilles i musikk og dans i det offentlige rom, og skape uttrykk som utfordrer stereotypier"}>
-                                        Undersøke hvordan kjønn, kjønnsroller og seksualitet fremstilles i musikk og dans i det offentlige rom, og skape uttrykk som utfordrer stereotypier</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Reflektere over hvordan musikk kan spille ulike roller for utvikling av individer og gruppers identitet"}>
-                                        Reflektere over hvordan musikk kan spille ulike roller for utvikling av individer og gruppers identitet</MenuItem>
-                                ) : []}
-
+                                    LOSet3.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                                 {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utøve et variert repertoar av musikk, sang, andre vokale uttrykk og dans"}>
-                                        Utøve et variert repertoar av musikk, sang, andre vokale uttrykk og dans</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Reflektere over hvordan musikalske tradisjoner, inkludert samiske musikktradisjoner, bevares og fornyes"}>
-                                        Reflektere over hvordan musikalske tradisjoner, inkludert samiske musikktradisjoner, bevares og fornyes</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Samarbeide med andre om å planlegge og gjennomføre øvingsprosesser hvor det inngår selvvalgt sang, andre vokale uttrykk, spill på instrumenter eller dans, og formidle resultatet i gruppe eller individuelt"}>
-                                        Samarbeide med andre om å planlegge og gjennomføre øvingsprosesser hvor det inngår selvvalgt sang, andre vokale uttrykk, spill på instrumenter eller dans, og formidle resultatet i gruppe eller individuelt</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Skape og programmere musikalske forløp ved å eksperimentere med lyd fra ulike kilder"}>
-                                        Skape og programmere musikalske forløp ved å eksperimentere med lyd fra ulike kilder</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utforske og formidle musikalske opplevelser og erfaringer, og reflektere over bruk av musikalske virkemidler"}>
-                                        Utforske og formidle musikalske opplevelser og erfaringer, og reflektere over bruk av musikalske virkemidler</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Lytte og prøve ut ulike uttrykk og begrunne valg i skapende prosesser fra idé til ferdig resultat"}>
-                                        Lytte og prøve ut ulike uttrykk og begrunne valg i skapende prosesser fra idé til ferdig resultat</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Bruke gehør og notasjonsteknikker som støtte i skapende arbeid"}>
-                                        Bruke gehør og notasjonsteknikker som støtte i skapende arbeid</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Bruke relevante fagbegreper i skapende arbeid og i refleksjon over prosesser og resultater"}>
-                                        Bruke relevante fagbegreper i skapende arbeid og i refleksjon over prosesser og resultater</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utforske og reflektere over hvordan musikk, sang og dans som estetiske uttrykk er påvirket av og uttrykk for historiske og samfunnsmessige forhold, og skape musikalske uttrykk som tar opp utfordringer i samtiden"}>
-                                        Utforske og reflektere over hvordan musikk, sang og dans som estetiske uttrykk er påvirket av og uttrykk for historiske og samfunnsmessige forhold, og skape musikalske uttrykk som tar opp utfordringer i samtiden</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utforske og drøfte musikkens og dansens betydning i samfunnet og etiske problemstillinger knyttet til musikalske ytringer og musikkulturer"}>
-                                        Utforske og drøfte musikkens og dansens betydning i samfunnet og etiske problemstillinger knyttet til musikalske ytringer og musikkulturer</MenuItem>
-                                ) : []}
+                                    LOSet4.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                             </TextField>
                         </FormControl>
                     </Grid>
@@ -440,7 +418,7 @@ export default function TaskCreate() {
                     </Grid>
                 </Grid>
             </Grid>
-            {(learningObjective !== "" && equipment !== "" && CT.length > 0) ? (
+            {(learningObjective !== "" && equipment.length > 0 && CT.length > 0) ? (
                 <div>
                     <Button variant="contained" onClick={findTasks}>
                         Finn lignende oppgaver
@@ -561,10 +539,6 @@ export default function TaskCreate() {
                                                         </Grid>
                                                         <Typography align="left" variant="body2" color="text.secondary">
                                                             Passer for {element.Grade}
-                                                        </Typography>
-                                                        <Divider sx={{ borderBottomWidth: 3 }} />
-                                                        <Typography align="left" variant="body2" color="text.secondary">
-                                                            Kompetansemål: {element.LearningObjective}
                                                         </Typography>
                                                         <Divider sx={{ borderBottomWidth: 3 }} />
                                                         <Typography align="left" variant="body2" color="text.secondary">

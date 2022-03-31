@@ -57,10 +57,6 @@ export default function MyTasks() {
                                         </Typography>
                                         <Divider sx={{ borderBottomWidth: 3 }} />
                                         <Typography align="left" variant="body2" color="text.secondary">
-                                            Kompetansemål: {element.LearningObjective}
-                                        </Typography>
-                                        <Divider sx={{ borderBottomWidth: 3 }} />
-                                        <Typography align="left" variant="body2" color="text.secondary">
                                             Utstyr/Plattform: {element.Equipment}
                                         </Typography>
                                         <Divider sx={{ borderBottomWidth: 3 }} />

@@ -1,13 +1,12 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Checkbox, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Checkbox, Divider, FormControl, Grid, ListItemText, MenuItem, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import { UserContext } from '../UserContext';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -16,17 +15,6 @@ const CssTextField = styled(TextField)({
         },
     }
 });
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 600,
-    bgcolor: '#393939',
-    boxShadow: 24,
-    p: 4,
-};
 
 const useStyles = makeStyles({
     root: {
@@ -51,7 +39,7 @@ const useStyles = makeStyles({
 export default function EditTask() {
 
     const [grade, setGrade] = useState("");
-    const [learningObjective, setLearningObjective] = useState("");
+    const [learningObjective, setLearningObjective] = useState([]);
     const [equipment, setEquipment] = useState([]);
     const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
@@ -60,13 +48,55 @@ export default function EditTask() {
     const classes = useStyles();
 
     const [gradeDefined, setGradeDefined] = useState(false);
+    const [gradeDefinedCounter, setGradeDefinedCounter] = useState(0);
     const [submitted, setSubmitted] = useState(false);
 
     const { value } = useContext(UserContext);
     const path = window.location.pathname.split("/")[2]
 
+    const [objectives, setObjectives] = useState([]);
     const [EquipOptions, setEquipOptions] = useState([]);
     const [CTmethods, setCTmethods] = useState([]);
+
+    const LOSet1 = [
+        "utøve et repertoar av sangleker, sanger og danser hentet fra elevenes nære musikkultur og fra kulturarven",
+        "utforske og eksperimentere med puls, rytme, tempo, klang, melodi, dynamikk, harmoni og form i dans, med stemmen og i spill på instrumenter",
+        "leke med musikkens grunnelementer gjennom lyd og stemme, lage mønstre og sette sammen mønstrene til enkle improvisasjoner og komposisjoner, også med digitale verktøy",
+        "formidle opplevelser av ulike musikalske uttrykk gjennom samtale og kunstneriske uttrykksformer"
+    ];
+
+    const LOSet2 = [
+        "utøve og utforske et repertoar av sanger og danser fra ulike musikkulturer, inkludert samisk musikkultur",
+        "synge og spille på instrumenter alene og sammen med andre ved bruk av gehør og enkel notasjon",
+        "eksperimentere med rytmer, melodier og andre grunnelementer, sette sammen mønstre til komposisjoner, også ved bruk av digitale verktøy, og beskrive arbeidsprosesser og resultater",
+        "formidle egne musikkopplevelser og beskrive bruk av musikalske virkemidler ved hjelp av enkle fagbegreper",
+        "samtale om og reflektere over hvordan musikk skaper mening når den brukes i ulike sosiale sammenhenger"
+    ];
+
+    const LOSet3 = [
+        "utøve et repertoar av musikk, sang, andre vokale uttrykk og dans fra samtiden og historien",
+        "utforske og drøfte hvordan musikk fra fortiden påvirker dagens musikk",
+        "øve inn og framføre sang og musikk, i samspill eller individuelt, gehørbasert og ved bruk av enkle notasjonsteknikker",
+        "lytte, eksperimentere og skape nye uttrykk med instrumenter, kropp, stemme eller lyd fra andre kilder, og presentere resultatet",
+        "bruke teknologi og digitale verktøy til å skape, øve inn og bearbeide musikk",
+        "bruke fagbegreper i beskrivelse av og refleksjon over arbeidsprosesser, resultater, musikalske uttrykk og virkemidler",
+        "utforske og formidle musikalske opplevelser og erfaringer",
+        "undersøke hvordan kjønn, kjønnsroller og seksualitet fremstilles i musikk og dans i det offentlige rom, og skape uttrykk som utfordrer stereotypier",
+        "reflektere over hvordan musikk kan spille ulike roller for utvikling av individer og gruppers identitet"
+    ];
+
+    const LOSet4 = [
+        "utøve et variert repertoar av musikk, sang, andre vokale uttrykk og dans",
+        "reflektere over hvordan musikalske tradisjoner, inkludert samiske musikktradisjoner, bevares og fornyes",
+        "samarbeide med andre om å planlegge og gjennomføre øvingsprosesser hvor det inngår selvvalgt sang, andre vokale uttrykk, spill på instrumenter eller dans, og formidle resultatet i gruppe eller individuelt",
+        "skape og programmere musikalske forløp ved å eksperimentere med lyd fra ulike kilder",
+        "utforske og formidle musikalske opplevelser og erfaringer, og reflektere over bruk av musikalske virkemidler",
+        "lytte og prøve ut ulike uttrykk og begrunne valg i skapende prosesser fra idé til ferdig resultat",
+        "bruke gehør og notasjonsteknikker som støtte i skapende arbeid",
+        "bruke relevante fagbegreper i skapende arbeid og i refleksjon over prosesser og resultater",
+        "utforske og reflektere over hvordan musikk, sang og dans som estetiske uttrykk er påvirket av og uttrykk for historiske og samfunnsmessige forhold, og skape musikalske uttrykk som tar opp utfordringer i samtiden",
+        "utforske og drøfte musikkens og dansens betydning i samfunnet og etiske problemstillinger knyttet til musikalske ytringer og musikkulturer"
+    ];
 
     const Equipfull = [
         "Instrument - Gitar",
@@ -94,8 +124,11 @@ export default function EditTask() {
         }
         else {
             setGradeDefined(true);
+            setLearningObjective([]);
         }
-    }, [grade, gradeDefined]);
+        setGradeDefinedCounter(gradeDefinedCounter + 1);
+        console.log(gradeDefinedCounter);
+    }, [grade]);
 
     let navigate = useNavigate();
 
@@ -121,7 +154,7 @@ export default function EditTask() {
                         const t = response.data.splice(response.data.indexOf(e), 1);
                         console.log(t);
                         setGrade(t[0].Grade);
-                        setLearningObjective(t[0].LearningObjective);
+                        setLearningObjective(t[0].LearningObjective.split("| "));
                         setEquipment(t[0].Equipment.split(", "));
                         setCT(t[0].CT.split(", "));
                         setTitle(t[0].Title);
@@ -133,14 +166,47 @@ export default function EditTask() {
     }, []);
 
     useEffect(() => {
-        console.log(equipment)
+        console.log(learningObjective)
+        const a = [];
+        if (grade === "1. - 2. trinn") {
+            for (const entry of LOSet1) {
+                if (!learningObjective.includes(entry)) {
+                    a.push(entry);
+                }
+            }
+        }
+        if (grade === "3. - 4. trinn") {
+            for (const entry of LOSet2) {
+                if (!learningObjective.includes(entry)) {
+                    a.push(entry);
+                }
+            }
+        }
+        if (grade === "5. - 7. trinn") {
+            for (const entry of LOSet3) {
+                if (!learningObjective.includes(entry)) {
+                    a.push(entry);
+                }
+            }
+        }
+        if (grade === "8. - 10. trinn") {
+            for (const entry of LOSet4) {
+                if (!learningObjective.includes(entry)) {
+                    a.push(entry);
+                }
+            }
+        }
+        console.log(a);
+        setObjectives(a);
+    }, [learningObjective])
+
+    useEffect(() => {
         const a = [];
         for (const entry of Equipfull) {
             if (!equipment.includes(entry)) {
                 a.push(entry);
             }
         }
-        console.log(a);
         setEquipOptions(a);
     }, [equipment])
 
@@ -166,23 +232,10 @@ export default function EditTask() {
         }).then(setSubmitted(true));
     };
 
-    const [modalContent, setModalContent] = useState(null);
-
-    const [open, setOpen] = useState(false);
-    const handleClose = () => setOpen(false);
-    const handleOpen = (e) => {
-        Axios.post('http://localhost:3001/fetchwikipage', {
-            title: e
-        }).then((response) => {
-            console.log(response.data);
-            if (response.data.message) {
-                return
-            }
-            else {
-                setModalContent(response.data[0]);
-            }
-        })
-        setOpen(true);
+    const updateLO = (e) => {
+        setLearningObjective(
+            typeof e === 'string' ? e.split(',') : e,
+        );
     }
 
     const updateEq = (e) => {
@@ -243,131 +296,151 @@ export default function EditTask() {
                     <Grid item xs={2}>
                         <FormControl >
                             <TextField
-                                value={learningObjective}
-                                label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål")}
-                                onChange={(e) => { setLearningObjective(e.target.value) }}
-                                className={classes.root}
+                                label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål*")}
                                 disabled={!(gradeDefined)}
+                                className={classes.root}
                                 select
                                 SelectProps={{
-                                    classes: { icon: classes.icon }
+                                    classes: { icon: classes.icon },
+                                    multiple: true,
+                                    value: learningObjective,
+                                    onChange: (e) => { updateLO(e.target.value) },
+                                    renderValue: (selected) => selected.join(", ")
                                 }}
                             >
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Utøve et repertoar av sangleker, sanger og danser hentet fra elevenes nære musikkultur og fra kulturarven"}>
-                                        Utøve et repertoar av sangleker, sanger og danser hentet fra elevenes nære musikkultur og fra kulturarven</MenuItem>
-                                ) : []}
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Utforske og eksperimentere med puls, rytme, tempo, klang, melodi, dynamikk, harmoni og form i dans, med stemmen og i spill på instrumenter"}>
-                                        Utforske og eksperimentere med puls, rytme, tempo, klang, melodi, dynamikk, harmoni og form i dans, med stemmen og i spill på instrumenter</MenuItem>
-                                ) : []}
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Leke med musikkens grunnelementer gjennom lyd og stemme, lage mønstre og sette sammen mønstrene til enkle improvisasjoner og komposisjoner, også med digitale verktøy"}>
-                                        Leke med musikkens grunnelementer gjennom lyd og stemme, lage mønstre og sette sammen mønstrene til enkle improvisasjoner og komposisjoner, også med digitale verktøy</MenuItem>
-                                ) : []}
-                                {grade === "1. - 2. trinn" ? (
-                                    <MenuItem value={"Formidle opplevelser av ulike musikalske uttrykk gjennom samtale og kunstneriske uttrykksformer"}>
-                                        Formidle opplevelser av ulike musikalske uttrykk gjennom samtale og kunstneriske uttrykksformer</MenuItem>
-                                ) : []}
+                                {grade === "1. - 2. trinn" && gradeDefinedCounter === 1 ? (
+                                    learningObjective.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={true} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "1. - 2. trinn" && gradeDefinedCounter === 1 ? (
+                                    objectives.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={false} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "3. - 4. trinn" && gradeDefinedCounter === 1 ? (
+                                    learningObjective.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={true} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "3. - 4. trinn" && gradeDefinedCounter === 1 ? (
+                                    objectives.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={false} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "5. - 7. trinn" && gradeDefinedCounter === 1 ? (
+                                    learningObjective.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={true} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "5. - 7. trinn" && gradeDefinedCounter === 1 ? (
+                                    objectives.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={false} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "8. - 10. trinn" && gradeDefinedCounter === 1 ? (
+                                    learningObjective.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={true} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "8. - 10. trinn" && gradeDefinedCounter === 1 ? (
+                                    objectives.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={false} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
 
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Utøve og utforske et repertoar av sanger og danser fra ulike musikkulturer, inkludert samisk musikkultur"}>
-                                        Utøve og utforske et repertoar av sanger og danser fra ulike musikkulturer, inkludert samisk musikkultur</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Synge og spille på instrumenter alene og sammen med andre ved bruk av gehør og enkel notasjon"}>
-                                        Synge og spille på instrumenter alene og sammen med andre ved bruk av gehør og enkel notasjon</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Eksperimentere med rytmer, melodier og andre grunnelementer, sette sammen mønstre til komposisjoner, også ved bruk av digitale verktøy, og beskrive arbeidsprosesser og resultater"}>
-                                        Eksperimentere med rytmer, melodier og andre grunnelementer, sette sammen mønstre til komposisjoner, også ved bruk av digitale verktøy, og beskrive arbeidsprosesser og resultater</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Formidle egne musikkopplevelser og beskrive bruk av musikalske virkemidler ved hjelp av enkle fagbegreper"}>
-                                        Formidle egne musikkopplevelser og beskrive bruk av musikalske virkemidler ved hjelp av enkle fagbegreper</MenuItem>
-                                ) : []}
-                                {grade === "3. - 4. trinn" ? (
-                                    <MenuItem value={"Samtale om og reflektere over hvordan musikk skaper mening når den brukes i ulike sosiale sammenhenger"}>
-                                        Samtale om og reflektere over hvordan musikk skaper mening når den brukes i ulike sosiale sammenhenger</MenuItem>
-                                ) : []}
-
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Utøve et repertoar av musikk, sang, andre vokale uttrykk og dans fra samtiden og historien"}>
-                                        Utøve et repertoar av musikk, sang, andre vokale uttrykk og dans fra samtiden og historien</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Utforske og drøfte hvordan musikk fra fortiden påvirker dagens musikk"}>
-                                        Utforske og drøfte hvordan musikk fra fortiden påvirker dagens musikk</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Øve inn og framføre sang og musikk, i samspill eller individuelt, gehørbasert og ved bruk av enkle notasjonsteknikker"}>
-                                        Øve inn og framføre sang og musikk, i samspill eller individuelt, gehørbasert og ved bruk av enkle notasjonsteknikker</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Lytte, eksperimentere og skape nye uttrykk med instrumenter, kropp, stemme eller lyd fra andre kilder, og presentere resultatet"}>
-                                        Lytte, eksperimentere og skape nye uttrykk med instrumenter, kropp, stemme eller lyd fra andre kilder, og presentere resultatet</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Bruke teknologi og digitale verktøy til å skape, øve inn og bearbeide musikk"}>
-                                        Bruke teknologi og digitale verktøy til å skape, øve inn og bearbeide musikk</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Bruke fagbegreper i beskrivelse av og refleksjon over arbeidsprosesser, resultater, musikalske uttrykk og virkemidler"}>
-                                        Bruke fagbegreper i beskrivelse av og refleksjon over arbeidsprosesser, resultater, musikalske uttrykk og virkemidler</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Utforske og formidle musikalske opplevelser og erfaringer"}>
-                                        Utforske og formidle musikalske opplevelser og erfaringer</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Undersøke hvordan kjønn, kjønnsroller og seksualitet fremstilles i musikk og dans i det offentlige rom, og skape uttrykk som utfordrer stereotypier"}>
-                                        Undersøke hvordan kjønn, kjønnsroller og seksualitet fremstilles i musikk og dans i det offentlige rom, og skape uttrykk som utfordrer stereotypier</MenuItem>
-                                ) : []}
-                                {grade === "5. - 7. trinn" ? (
-                                    <MenuItem value={"Reflektere over hvordan musikk kan spille ulike roller for utvikling av individer og gruppers identitet"}>
-                                        Reflektere over hvordan musikk kan spille ulike roller for utvikling av individer og gruppers identitet</MenuItem>
-                                ) : []}
-
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utøve et variert repertoar av musikk, sang, andre vokale uttrykk og dans"}>
-                                        Utøve et variert repertoar av musikk, sang, andre vokale uttrykk og dans</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Reflektere over hvordan musikalske tradisjoner, inkludert samiske musikktradisjoner, bevares og fornyes"}>
-                                        Reflektere over hvordan musikalske tradisjoner, inkludert samiske musikktradisjoner, bevares og fornyes</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Samarbeide med andre om å planlegge og gjennomføre øvingsprosesser hvor det inngår selvvalgt sang, andre vokale uttrykk, spill på instrumenter eller dans, og formidle resultatet i gruppe eller individuelt"}>
-                                        Samarbeide med andre om å planlegge og gjennomføre øvingsprosesser hvor det inngår selvvalgt sang, andre vokale uttrykk, spill på instrumenter eller dans, og formidle resultatet i gruppe eller individuelt</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Skape og programmere musikalske forløp ved å eksperimentere med lyd fra ulike kilder"}>
-                                        Skape og programmere musikalske forløp ved å eksperimentere med lyd fra ulike kilder</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utforske og formidle musikalske opplevelser og erfaringer, og reflektere over bruk av musikalske virkemidler"}>
-                                        Utforske og formidle musikalske opplevelser og erfaringer, og reflektere over bruk av musikalske virkemidler</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Lytte og prøve ut ulike uttrykk og begrunne valg i skapende prosesser fra idé til ferdig resultat"}>
-                                        Lytte og prøve ut ulike uttrykk og begrunne valg i skapende prosesser fra idé til ferdig resultat</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Bruke gehør og notasjonsteknikker som støtte i skapende arbeid"}>
-                                        Bruke gehør og notasjonsteknikker som støtte i skapende arbeid</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Bruke relevante fagbegreper i skapende arbeid og i refleksjon over prosesser og resultater"}>
-                                        Bruke relevante fagbegreper i skapende arbeid og i refleksjon over prosesser og resultater</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utforske og reflektere over hvordan musikk, sang og dans som estetiske uttrykk er påvirket av og uttrykk for historiske og samfunnsmessige forhold, og skape musikalske uttrykk som tar opp utfordringer i samtiden"}>
-                                        Utforske og reflektere over hvordan musikk, sang og dans som estetiske uttrykk er påvirket av og uttrykk for historiske og samfunnsmessige forhold, og skape musikalske uttrykk som tar opp utfordringer i samtiden</MenuItem>
-                                ) : []}
-                                {grade === "8. - 10. trinn" ? (
-                                    <MenuItem value={"Utforske og drøfte musikkens og dansens betydning i samfunnet og etiske problemstillinger knyttet til musikalske ytringer og musikkulturer"}>
-                                        Utforske og drøfte musikkens og dansens betydning i samfunnet og etiske problemstillinger knyttet til musikalske ytringer og musikkulturer</MenuItem>
-                                ) : []}
+                                {grade === "1. - 2. trinn" && gradeDefinedCounter !== 1 ? (
+                                    LOSet1.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "3. - 4. trinn" && gradeDefinedCounter !== 1 ? (
+                                    LOSet2.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "5. - 7. trinn" && gradeDefinedCounter !== 1 ? (
+                                    LOSet3.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
+                                {grade === "8. - 10. trinn" && gradeDefinedCounter !== 1 ? (
+                                    LOSet4.map((item) => (
+                                        <MenuItem key={item} value={item}>
+                                            <Checkbox checked={learningObjective.indexOf(item) > -1} />
+                                            <ListItemText>
+                                                {item}
+                                            </ListItemText>
+                                        </MenuItem>
+                                    ))
+                                ) : (<></>)
+                                }
                             </TextField>
                         </FormControl>
                     </Grid>
@@ -459,23 +532,6 @@ export default function EditTask() {
                 <Button variant="contained" sx={{ margin: "20px" }} onClick={save}>Lagre</Button>
                 <Button variant="outlined" component={Link} to="/" sx={{ margin: "20px" }}>Avbryt</Button>
             </div>
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                {modalContent ? (
-                    <Box sx={style}>
-                        <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
-                            {modalContent.Title}
-                        </Typography>
-                        <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
-                            {modalContent.Description}
-                        </Typography>
-                    </Box>
-                ) : (<></>)}
-            </Modal>
         </Box >
     );
 }
