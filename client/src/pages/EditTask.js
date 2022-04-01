@@ -44,6 +44,8 @@ export default function EditTask() {
     const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [evaluation, setEvaluation] = useState("");
+    const [outcome, setOutcome] = useState("");
 
     const classes = useStyles();
 
@@ -159,6 +161,8 @@ export default function EditTask() {
                         setCT(t[0].CT.split(", "));
                         setTitle(t[0].Title);
                         setDescription(t[0].Description);
+                        setEvaluation(t[0].Evaluation);
+                        setOutcome(t[0].Outcome);
                     }
                 }
             }
@@ -228,6 +232,8 @@ export default function EditTask() {
             CT: CT,
             title: title,
             description: description,
+            evaluation: evaluation,
+            outcome: outcome,
             taskID: path
         }).then(setSubmitted(true));
     };
@@ -516,7 +522,7 @@ export default function EditTask() {
                     </Grid>
                 </Grid>
             </Grid>
-            <CssTextField value={title} label={title ? ("") : ("Tittel")} id="custom-css-outlined-input" sx={{ width: 600, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
+            <CssTextField value={title} label={title ? ("") : ("Tittel")} id="custom-css-outlined-input" sx={{ width: 800, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
             <div>
                 <CssTextField
                     id="outlined-multiline-static"
@@ -524,8 +530,30 @@ export default function EditTask() {
                     label={description ? ("") : ("Oppgavebeskrivelse")}
                     multiline
                     rows={15}
-                    sx={{ width: 600, marginTop: "20px", marginBottom: "20px" }}
+                    sx={{ width: 800, marginTop: "20px", marginBottom: "20px" }}
                     onChange={(e) => { setDescription(e.target.value) }}
+                />
+            </div>
+            <div>
+                <CssTextField
+                    id="outlined-multiline-static"
+                    value={evaluation}
+                    label={evaluation ? ("") : ("Vurdering*")}
+                    multiline
+                    rows={15}
+                    sx={{ width: 800, marginTop: "20px", marginBottom: "20px" }}
+                    onChange={(e) => { setEvaluation(e.target.value) }}
+                />
+            </div>
+            <div>
+                <CssTextField
+                    id="outlined-multiline-static"
+                    value={outcome}
+                    label={outcome ? ("") : ("Potensielt Læringsutbytte*")}
+                    multiline
+                    rows={15}
+                    sx={{ width: 800, marginTop: "20px", marginBottom: "20px" }}
+                    onChange={(e) => { setOutcome(e.target.value) }}
                 />
             </div>
             <div>

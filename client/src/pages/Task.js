@@ -64,11 +64,23 @@ export default function Task() {
                             <Typography align={"left"} color="text.secondary" maxWidth={500}>
                                 AT Metode(r): {taskData.CT}
                             </Typography>
-                            <Typography align={"left"} color="text.secondary" marginTop="70px">
-                                Oppgavebeskrivelse
+                            <Typography align={"left"} color="text.secondary" marginTop="70px" sx={{ fontWeight: 'bold' }}>
+                                Oppgavebeskrivelse:
                             </Typography>
                             <Typography align={"left"} color="text.secondary" marginTop="5px">
                                 {taskData.Description}
+                            </Typography>
+                            <Typography align={"left"} color="text.secondary" marginTop="10px" sx={{ fontWeight: 'bold' }}>
+                                Vurdering:
+                            </Typography>
+                            <Typography align={"left"} color="text.secondary" marginTop="5px">
+                                {taskData.Evaluation}
+                            </Typography>
+                            <Typography align={"left"} color="text.secondary" marginTop="10px" sx={{ fontWeight: 'bold' }}>
+                                Potensielt Læringsutbytte:
+                            </Typography>
+                            <Typography align={"left"} color="text.secondary" marginTop="5px">
+                                {taskData.Outcome}
                             </Typography>
                         </div>
                     ) :

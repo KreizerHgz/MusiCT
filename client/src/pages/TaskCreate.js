@@ -55,6 +55,8 @@ export default function TaskCreate() {
     const [CT, setCT] = useState([]);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [evaluation, setEvaluation] = useState("");
+    const [outcome, setOutcome] = useState("");
     const [succeedes, setSucceedes] = useState(null);
     const [preceedes, setPreceedes] = useState(null);
 
@@ -112,6 +114,8 @@ export default function TaskCreate() {
             equipment: equipment,
             CT: CT,
             title: title,
+            evaluation: evaluation,
+            outcome: outcome,
             description: description,
             createdBy: value,
             succeedes: succeedes,
@@ -162,6 +166,8 @@ export default function TaskCreate() {
     const importTask = (e) => {
         setTitle(e.Title);
         setDescription(e.Description);
+        setEvaluation(e.Evaluation);
+        setOutcome(e.Outcome);
         setOpenSimilar(false);
         console.log(e, title, description);
     }
@@ -418,23 +424,45 @@ export default function TaskCreate() {
                     </Grid>
                 </Grid>
             </Grid>
-            {(learningObjective !== "" && equipment.length > 0 && CT.length > 0) ? (
+            {(learningObjective.length > 0 && equipment.length > 0 && CT.length > 0) ? (
                 <div>
                     <Button variant="contained" onClick={findTasks}>
                         Finn lignende oppgaver
                     </Button>
                 </div>
             ) : (<></>)}
-            <CssTextField value={title} label={title ? ("") : ("Tittel")} id="custom-css-outlined-input" sx={{ width: 600, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
+            <CssTextField value={title} label={title ? ("") : ("Tittel*")} id="custom-css-outlined-input" sx={{ width: 800, marginTop: "20px" }} onChange={(e) => { setTitle(e.target.value) }} />
             <div>
                 <CssTextField
                     id="outlined-multiline-static"
                     value={description}
-                    label={description ? ("") : ("Oppgavebeskrivelse")}
+                    label={description ? ("") : ("Oppgavebeskrivelse*")}
                     multiline
                     rows={15}
-                    sx={{ width: 600, marginTop: "20px", marginBottom: "20px" }}
+                    sx={{ width: 800, marginTop: "20px", marginBottom: "20px" }}
                     onChange={(e) => { setDescription(e.target.value) }}
+                />
+            </div>
+            <div>
+                <CssTextField
+                    id="outlined-multiline-static"
+                    value={evaluation}
+                    label={evaluation ? ("") : ("Vurdering*")}
+                    multiline
+                    rows={15}
+                    sx={{ width: 800, marginTop: "20px", marginBottom: "20px" }}
+                    onChange={(e) => { setEvaluation(e.target.value) }}
+                />
+            </div>
+            <div>
+                <CssTextField
+                    id="outlined-multiline-static"
+                    value={outcome}
+                    label={outcome ? ("") : ("Potensielt Læringsutbytte*")}
+                    multiline
+                    rows={15}
+                    sx={{ width: 800, marginTop: "20px", marginBottom: "20px" }}
+                    onChange={(e) => { setOutcome(e.target.value) }}
                 />
             </div>
             <div>
