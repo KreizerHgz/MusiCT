@@ -681,9 +681,10 @@ export default function TaskCreate() {
             >
                 <DrawerHeader>
                     <IconButton onClick={handleDrawerClose}>
-                        {<ChevronRightIcon className={classes.icon} sx={{ marginTop: 5, fontSize: 40 }} />}
+                        {<ChevronRightIcon className={classes.icon} sx={{ marginTop: 3, marginBottom: 3, fontSize: 40 }} />}
                     </IconButton>
                 </DrawerHeader>
+                <Divider />
                 <Typography sx={{ marginTop: "25vh" }}>
                     {currentQuestion}
                 </Typography>
