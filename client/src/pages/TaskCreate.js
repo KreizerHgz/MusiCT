@@ -277,7 +277,8 @@ export default function TaskCreate() {
     const reviewQuestions = [
         "Om passelig, er oppgaven utforskende?",
         "Tar oppgaven hensyn til elevenes kulturelle bakgrunn?",
-        "Gir oppgaven tilstrekkelig utfordring for alle elever?"
+        "Gir oppgaven tilstrekkelig utfordring for alle elever?",
+        "Er språkbruken tilpasset algoritmisk tenkning? (Se CTL i Wiki)"
     ]
 
     const [currentQuestion, setCurrentQuestion] = useState(reviewQuestions[0]);
