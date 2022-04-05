@@ -1,7 +1,7 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Card, CardActionArea, CardContent, Checkbox, Divider, FormControl, Grid, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, Checkbox, Divider, Drawer, FormControl, Grid, IconButton, List, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import Axios from 'axios';
 import { UserContext } from '../UserContext';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const CssTextField = styled(TextField)({
     '& .MuiOutlinedInput-root': {
@@ -46,6 +47,15 @@ const useStyles = makeStyles({
         fill: 'white',
     },
 });
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    justifyContent: 'flex-start',
+}));
+
+const drawerWidth = 250;
 
 export default function TaskCreate() {
 
@@ -252,6 +262,34 @@ export default function TaskCreate() {
         "Abstraksjon",
         "Evaluering"
     ];
+
+    const [openDrawer, setOpenDrawer] = useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpenDrawer(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpenDrawer(false);
+    };
+
+
+    const reviewQuestions = [
+        "Om passelig, er oppgaven utforskende?",
+        "Tar oppgaven hensyn til elevenes kulturelle bakgrunn?",
+        "Gir oppgaven tilstrekkelig utfordring for alle elever?"
+    ]
+
+    const [currentQuestion, setCurrentQuestion] = useState(reviewQuestions[0]);
+
+    const UpdateQuestionPrev = () => {
+        setCurrentQuestion(reviewQuestions[reviewQuestions.indexOf(currentQuestion) - 1]);
+    }
+
+    const UpdateQuestionNext = () => {
+        setCurrentQuestion(reviewQuestions[reviewQuestions.indexOf(currentQuestion) + 1]);
+    }
+
 
     return (
         <Box height={"100vh"} overflow="auto">
@@ -511,6 +549,12 @@ export default function TaskCreate() {
                 </FormControl>
             </div>
             <div>
+                <Button variant="contained" onClick={handleDrawerOpen}>
+                    Se refleksjonsspørsmål
+                </Button>
+
+            </div>
+            <div>
                 <Button variant="contained" sx={{ margin: "20px" }} onClick={save}>Lagre</Button>
                 <Button variant="outlined" component={Link} to="/" sx={{ margin: "20px" }}>Avbryt</Button>
             </div>
@@ -614,8 +658,47 @@ export default function TaskCreate() {
                         Du kan enten åpne oppgavesidene for disse oppgavene for inspirasjon, eller du kan importere oppgaven inn i din oppgavebygger for å modifisere oppgaven slik at den passer deg.
                         Felter markert med * må fylles ut for at oppgaven kan lagres
                     </Typography>
+                    <Typography id="modal-modal-description" sx={{ mt: 2 }} color='text.secondary'>
+                        Før du lagrer oppgaven din kan du gå gjennom oppgavebyggerens refleksjonsspørsmål.
+                        Disse er lagd for å få deg til å reflektere over kvaliteten på oppgaven din ved å stille spørsmål om spesfikke ting ved oppgaven.
+                        Å gå gjennom spørsmålene er frivillig, men gjerne ta en titt :)
+                    </Typography>
                 </Box>
             </Modal>
+
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                    },
+                }}
+                variant="persistent"
+                anchor="right"
+                open={openDrawer}
+            >
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        {<ChevronRightIcon className={classes.icon} sx={{ marginTop: 5, fontSize: 40 }} />}
+                    </IconButton>
+                </DrawerHeader>
+                <Typography sx={{ marginTop: "25vh" }}>
+                    {currentQuestion}
+                </Typography>
+                <div>
+                    {currentQuestion === reviewQuestions[0] ? (
+                        <Button disabled sx={{ margin: "10px", width: 75 }}></Button>) :
+                        (
+                            <Button variant="contained" sx={{ margin: "10px", width: 75 }} onClick={UpdateQuestionPrev}>Forrige</Button>
+                        )}
+                    {currentQuestion === reviewQuestions[reviewQuestions.length - 1] ? (
+                        <Button disabled sx={{ margin: "10px", width: 75 }}></Button>) :
+                        (
+                            <Button variant="contained" sx={{ margin: "10px", width: 75 }} onClick={UpdateQuestionNext}>Neste</Button>
+                        )}
+                </div>
+            </Drawer>
         </Box >
     );
 }
