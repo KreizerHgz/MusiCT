@@ -43,6 +43,18 @@ const useStyles = makeStyles({
             borderColor: "white"
         }
     },
+    disabled: {
+        width: 250,
+        "& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            borderColor: "black"
+        },
+        "&:hover .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
+            borderColor: "black"
+        },
+        "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "black"
+        }
+    },
     icon: {
         fill: 'white',
     },
@@ -342,7 +354,7 @@ export default function TaskCreate() {
                             <TextField
                                 label={!gradeDefined ? ("Velg klassenivå først") : ("Kompetansemål*")}
                                 disabled={!(gradeDefined)}
-                                className={classes.root}
+                                className={!gradeDefined ? (classes.disabled) : (classes.root)}
                                 select
                                 SelectProps={{
                                     classes: { icon: classes.icon },
