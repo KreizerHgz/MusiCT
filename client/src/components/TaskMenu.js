@@ -29,9 +29,8 @@ export default function TaskMenu(props) {
         console.log(e);
         Axios.post('http://localhost:3001/deletetask', {
             taskID: e.TaskID
-        }).then((response) => {
-            alert("Oppgaven er slettet");
         })
+        alert("Oppgaven er slettet");
     };
 
     const updateVisibility = (e) => {
