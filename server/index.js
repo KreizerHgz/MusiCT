@@ -50,30 +50,31 @@ app.post('/submittask', (req, res) => {
     const evaluation = req.body.evaluation
     const outcome = req.body.outcome
     const createdBy = req.body.createdBy
+    const isPrivate = req.body.isPrivate
     if (req.body.succeedes && req.body.preceedes) {
         const succeedes = req.body.succeedes
         const preceedes = req.body.preceedes
 
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, Succeedes, Preceedes) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, succeedes, preceedes], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, Succeedes, Preceedes, isPrivate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, succeedes, preceedes, isPrivate], (err, result) => {
             console.log(err);
         })
     }
     else if (!req.body.succeedes && req.body.preceedes) {
         const preceedes = req.body.preceedes
 
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, Preceedes) VALUES (?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, preceedes], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, Preceedes, isPrivate) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, preceedes, isPrivate], (err, result) => {
             console.log(err);
         })
     }
     else if (req.body.succeedes && !req.body.preceedes) {
         const succeedes = req.body.succeedes
 
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, Succeedes) VALUES (?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, succeedes], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, Succeedes, isPrivate) VALUES (?,?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, succeedes, isPrivate], (err, result) => {
             console.log(err);
         })
     }
     else {
-        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy) VALUES (?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy], (err, result) => {
+        db.query("INSERT INTO task (Grade, LearningObjective, Equipment, CT, Title, Description, Evaluation, Outcome, CreatedBy, isPrivate) VALUES (?,?,?,?,?,?,?,?,?,?)", [grade, learningObjective, equipment, CT, title, description, evaluation, outcome, createdBy, isPrivate], (err, result) => {
             console.log(err);
         })
     }
@@ -111,7 +112,7 @@ app.post('/fetchmytasks', (req, res) => {
 
 app.post('/fetchtasks', (req, res) => {
 
-    db.query("SELECT * FROM task", (err, result) => {
+    db.query("SELECT * FROM task WHERE isPrivate = 0", (err, result) => {
         if (err) {
             res.send({ err: err });
         }
@@ -209,20 +210,156 @@ app.post('/fetchwikipage', (req, res) => {
 
 app.post('/fetchsimilartasks', (req, res) => {
 
-    const learningObjective = req.body.learningObjective.join("| ")
-    const equipment = req.body.equipment.join(", ")
-    const CT = req.body.CT.join(", ")
+    let grade = null;
+    let learningObjective = null;
+    let equipment = null;
+    let CT = null;
 
-    db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ? AND CT = ?", [learningObjective, equipment, CT], (err, result) => {
-        if (err) {
-            res.send({ err: err });
-        }
-        if (result.length > 0) {
-            res.send(result);
-        } else {
-            res.send({ message: "No tasks found" });
-        }
-    })
+    if (req.body.grade) {
+        grade = req.body.grade
+    }
+    if (req.body.learningObjective) {
+        learningObjective = req.body.learningObjective.join("| ")
+    }
+    if (req.body.equipment) {
+        equipment = req.body.equipment.join(", ")
+    }
+    if (req.body.CT) {
+        CT = req.body.CT.join(", ")
+    }
+
+    if (grade && !learningObjective && !equipment && !CT) {
+        db.query("SELECT * FROM task WHERE Grade = ? AND isPrivate = 0", [grade], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (grade && !learningObjective && equipment && !CT) {
+        db.query("SELECT * FROM task WHERE Grade = ? AND Equipment = ? AND isPrivate = 0", [grade, equipment], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (grade && !learningObjective && !equipment && CT) {
+        db.query("SELECT * FROM task WHERE Grade = ? AND CT = ? AND isPrivate = 0", [grade, CT], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (grade && !learningObjective && equipment && CT) {
+        db.query("SELECT * FROM task WHERE Grade = ? AND Equipment = ? AND CT = ? AND isPrivate = 0", [grade, equipment, CT], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (learningObjective && !equipment && !CT) {
+        db.query("SELECT * FROM task WHERE LearningObjective = ? AND isPrivate = 0", [learningObjective], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (learningObjective && equipment && !CT) {
+        db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ? AND isPrivate = 0", [learningObjective, equipment], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (learningObjective && !equipment && CT) {
+        db.query("SELECT * FROM task WHERE LearningObjective = ? AND CT = ? AND isPrivate = 0", [learningObjective, CT], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (learningObjective && equipment && CT) {
+        db.query("SELECT * FROM task WHERE LearningObjective = ? AND Equipment = ? AND CT = ? AND isPrivate = 0", [learningObjective, equipment, CT], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (!grade && !learningObjective && !equipment && CT) {
+        db.query("SELECT * FROM task WHERE CT = ? AND isPrivate = 0", [CT], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (!grade && !learningObjective && equipment && !CT) {
+        db.query("SELECT * FROM task WHERE Equipment = ? AND isPrivate = 0", [equipment], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
+    else if (!grade && !learningObjective && equipment && CT) {
+        db.query("SELECT * FROM task WHERE Equipment = ? AND CT = ? AND isPrivate = 0", [equipment, CT], (err, result) => {
+            if (err) {
+                res.send({ err: err });
+            }
+            if (result.length > 0) {
+                res.send(result);
+            } else {
+                res.send({ message: "No tasks found" });
+            }
+        })
+    }
 })
 
 app.post('/updatetask', (req, res) => {
@@ -255,6 +392,17 @@ app.post('/deletetask', (req, res) => {
     })
 })
 
+app.post('/updatevisibility', (req, res) => {
+
+    const isPrivate = req.body.isPrivate
+    const taskID = req.body.taskID
+
+    db.query("UPDATE task SET isPrivate = ? WHERE TaskID = ?", [isPrivate, taskID], (err, result) => {
+        if (err) {
+            res.send({ err: err });
+        }
+    })
+})
 
 app.listen(3001, () => {
     console.log("All good!");

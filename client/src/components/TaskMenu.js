@@ -34,6 +34,29 @@ export default function TaskMenu(props) {
         })
     };
 
+    const updateVisibility = (e) => {
+        console.log(e);
+        let b;
+        if (e.isPrivate === 0) {
+            b = 1;
+        }
+        if (e.isPrivate === 1) {
+            b = 0;
+        }
+        Axios.post('http://localhost:3001/updatevisibility', {
+            taskID: e.TaskID,
+            isPrivate: b
+        }).then((response) => {
+            if (e.isPrivate === 0) {
+                alert("Oppgaven er nå synlig for alle");
+            }
+            if (e.isPrivate === 1) {
+                alert("Oppgaven er nå privat og bare synlig for deg");
+            }
+        })
+    };
+
+
     return (
         <div>
             <IconButton
@@ -57,7 +80,7 @@ export default function TaskMenu(props) {
                 <MenuItem component={Link} to={"/oppgave/" + props.element.TaskID}>Åpne Oppgaveside</MenuItem>
                 <MenuItem component={Link} to={"/rediger/" + props.element.TaskID}>Rediger Oppgave</MenuItem>
                 <MenuItem onClick={() => { deleteTask(props.element); handleClose() }}>Slett Oppgave</MenuItem>
-                <MenuItem onClick={handleClose}>Endre synlighet</MenuItem>
+                <MenuItem onClick={() => { updateVisibility(props.element); handleClose() }}>Endre synlighet</MenuItem>
             </Menu>
         </div>
     );

@@ -1,7 +1,7 @@
 import '../App.css';
 import { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Box, Button, Card, CardActionArea, CardContent, Checkbox, Divider, Drawer, FormControl, Grid, IconButton, List, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, Checkbox, Divider, Drawer, FormControl, FormControlLabel, Grid, IconButton, List, ListItemText, MenuItem, Modal, styled, TextField } from '@mui/material';
 import Navbar from '../components/Navbar';
 import { makeStyles } from "@material-ui/core/styles";
 import { Link, useNavigate } from 'react-router-dom';
@@ -90,6 +90,11 @@ export default function TaskCreate() {
     const { value } = useContext(UserContext);
     const [otherTasks, setOtherTasks] = useState(null);
 
+    const [searchGrade, setSearchGrade] = useState(true);
+    const [searchLO, setSearchLO] = useState(true);
+    const [searchEquip, setSearchEquip] = useState(true);
+    const [searchCT, setSearchCT] = useState(true);
+
     useEffect(() => {
         if (grade === "") {
             setGradeDefined(false);
@@ -129,7 +134,7 @@ export default function TaskCreate() {
         console.log("Preceedes:", preceedes);
     }, [succeedes, preceedes]);
 
-    const save = () => {
+    const save = (int) => {
         Axios.post('http://localhost:3001/submittask', {
             grade: grade,
             learningObjective: learningObjective,
@@ -141,7 +146,8 @@ export default function TaskCreate() {
             description: description,
             createdBy: value,
             succeedes: succeedes,
-            preceedes: preceedes
+            preceedes: preceedes,
+            isPrivate: int
         }).then(setSubmitted(true));
     };
 
@@ -169,20 +175,170 @@ export default function TaskCreate() {
     const handleCloseSimilar = () => setOpenSimilar(false);
 
     const findTasks = () => {
-        Axios.post('http://localhost:3001/fetchsimilartasks', {
-            learningObjective: learningObjective,
-            equipment: equipment,
-            CT: CT
-        }).then((response) => {
-            console.log(response.data);
-            if (response.data.message) {
-                alert(response.data.message);
-            }
-            else {
-                setSimilarTasks(response.data);
-                setOpenSimilar(true);
-            }
-        })
+        handleCloseSearchDialogue();
+        if (searchGrade && !searchLO && !searchEquip && !searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                grade: grade
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchGrade && !searchLO && searchEquip && !searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                grade: grade,
+                equipment: equipment
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchGrade && !searchLO && !searchEquip && searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                grade: grade,
+                CT: CT
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchGrade && !searchLO && searchEquip && searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                grade: grade,
+                equipment: equipment,
+                CT: CT
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchLO && !searchEquip && !searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                learningObjective: learningObjective
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchLO && searchEquip && !searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                learningObjective: learningObjective,
+                equipment: equipment
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchLO && !searchEquip && searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                learningObjective: learningObjective,
+                CT: CT
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (searchLO && searchEquip && searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                learningObjective: learningObjective,
+                equipment: equipment,
+                CT: CT
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (!searchGrade && !searchLO && !searchEquip && searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                CT: CT
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (!searchGrade && !searchLO && searchEquip && !searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                equipment: equipment
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
+        else if (!searchGrade && !searchLO && searchEquip && searchCT) {
+            Axios.post('http://localhost:3001/fetchsimilartasks', {
+                equipment: equipment,
+                CT: CT
+            }).then((response) => {
+                console.log(response.data);
+                if (response.data.message) {
+                    alert(response.data.message);
+                }
+                else {
+                    setSimilarTasks(response.data);
+                    setOpenSimilar(true);
+                }
+            })
+        }
     }
 
     const importTask = (e) => {
@@ -197,6 +353,14 @@ export default function TaskCreate() {
     const [openCreatorInfo, setOpenCreatorInfo] = useState(false);
     const handleCloseCreatorInfo = () => setOpenCreatorInfo(false);
     const handleOpenCreatorInfo = () => setOpenCreatorInfo(true);
+
+    const [openSaveDialogue, setOpenSaveDialogue] = useState(false);
+    const handleCloseSaveDialogue = () => setOpenSaveDialogue(false);
+    const handleOpenSaveDialogue = () => setOpenSaveDialogue(true);
+
+    const [openSearchDialogue, setOpenSearchDialogue] = useState(false);
+    const handleCloseSearchDialogue = () => setOpenSearchDialogue(false);
+    const handleOpenSearchDialogue = () => setOpenSearchDialogue(true);
 
     const updateLO = (e) => {
         setLearningObjective(
@@ -477,7 +641,7 @@ export default function TaskCreate() {
             </Grid>
             {(learningObjective.length > 0 && equipment.length > 0 && CT.length > 0) ? (
                 <div>
-                    <Button variant="contained" onClick={findTasks}>
+                    <Button variant="contained" onClick={handleOpenSearchDialogue}>
                         Finn lignende oppgaver
                     </Button>
                 </div>
@@ -568,7 +732,7 @@ export default function TaskCreate() {
 
             </div>
             <div>
-                <Button variant="contained" sx={{ margin: "20px" }} onClick={save}>Lagre</Button>
+                <Button variant="contained" sx={{ margin: "20px" }} onClick={handleOpenSaveDialogue}>Lagre</Button>
                 <Button variant="outlined" component={Link} to="/" sx={{ margin: "20px" }}>Avbryt</Button>
             </div>
             <Modal
@@ -676,6 +840,67 @@ export default function TaskCreate() {
                         Disse er lagd for å få deg til å reflektere over kvaliteten på oppgaven din ved å stille spørsmål om spesfikke ting ved oppgaven.
                         Å gå gjennom spørsmålene er frivillig, men gjerne ta en titt :)
                     </Typography>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openSaveDialogue}
+                onClose={handleCloseSaveDialogue}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Grid
+                        container spacing={0}
+                        align="center"
+                        justify="center"
+                        direction="column"
+                        marginTop={"20px"}
+                        marginBottom={"20px"}>
+                        <Grid container justifyContent="center">
+                            <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
+                                Ønsker du at oppgaven skal lagres privat slik at den bare er tilgjengelig for deg?
+                            </Typography>
+                            <div>
+                                <Button variant="contained" sx={{ margin: "20px" }} onClick={() => { save(1) }}>Ja</Button>
+                                <Button variant="contained" sx={{ margin: "20px" }} onClick={() => { save(0) }}>Nei</Button>
+                            </div>
+                        </Grid>
+                    </Grid>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openSearchDialogue}
+                onClose={handleCloseSearchDialogue}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <Grid
+                        container spacing={0}
+                        align="center"
+                        justify="center"
+                        direction="column"
+                        marginTop={"20px"}
+                        marginBottom={"20px"}>
+                        <div>
+                            <Typography id="modal-modal-title" variant="h6" component="h2" color='text.primary'>
+                                Finn oppgaver med samme:
+                            </Typography>
+                        </div>
+                        <Grid container justifyContent="center">
+                            <div>
+                                <FormControlLabel control={<Checkbox checked={searchGrade} onChange={() => { setSearchGrade(!searchGrade) }} />} label="Klassetrinn" sx={{ color: 'text.secondary' }} />
+                                <FormControlLabel control={<Checkbox checked={searchLO} onChange={() => { setSearchLO(!searchLO) }} />} label="Kompetansemål" sx={{ color: 'text.secondary' }} />
+                                <FormControlLabel control={<Checkbox checked={searchEquip} onChange={() => { setSearchEquip(!searchEquip) }} />} label="Utstyr/Plattform" sx={{ color: 'text.secondary' }} />
+                                <FormControlLabel control={<Checkbox checked={searchCT} onChange={() => { setSearchCT(!searchCT) }} />} label="AT Metode(r)" sx={{ color: 'text.secondary' }} />
+                            </div>
+                        </Grid>
+                        <div>
+                            <Button variant="contained" sx={{ margin: "20px" }} onClick={findTasks}>Søk</Button>
+                        </div>
+                    </Grid>
                 </Box>
             </Modal>
 
