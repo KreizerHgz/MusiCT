@@ -138,6 +138,7 @@ export default function EditTask() {
         if (submitted === false) {
         }
         else if (submitted === true) {
+            alert("Endringene er lagret");
             return navigate("/");
         }
     }, [submitted, navigate]);

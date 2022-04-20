@@ -111,6 +111,7 @@ export default function TaskCreate() {
         if (submitted === false) {
         }
         else if (submitted === true) {
+            alert("Oppgaven er lagret");
             return navigate("/");
         }
     }, [submitted, navigate]);

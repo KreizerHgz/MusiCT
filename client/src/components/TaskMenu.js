@@ -35,7 +35,6 @@ export default function TaskMenu(props) {
     };
 
     const updateVisibility = (e) => {
-        console.log(e);
         let b;
         if (e.isPrivate === 0) {
             b = 1;
@@ -46,14 +45,15 @@ export default function TaskMenu(props) {
         Axios.post('http://localhost:3001/updatevisibility', {
             taskID: e.TaskID,
             isPrivate: b
-        }).then((response) => {
-            if (e.isPrivate === 0) {
-                alert("Oppgaven er nå synlig for alle");
-            }
-            if (e.isPrivate === 1) {
-                alert("Oppgaven er nå privat og bare synlig for deg");
-            }
         })
+        if (e.isPrivate === 0) {
+            alert("Oppgaven er nå privat og bare synlig for deg");
+            console.log(e);
+        }
+        if (e.isPrivate === 1) {
+            alert("Oppgaven er nå synlig for alle");
+            console.log(e);
+        }
     };
 
 
