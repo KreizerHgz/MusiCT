@@ -27,7 +27,7 @@ export default function TaskMenu(props) {
 
     const deleteTask = (e) => {
         console.log(e);
-        Axios.post('http://localhost:3001/deletetask', {
+        Axios.post('https://musict-v2.herokuapp.com/deletetask', {
             taskID: e.TaskID
         })
         alert("Oppgaven er slettet");
@@ -41,7 +41,7 @@ export default function TaskMenu(props) {
         if (e.isPrivate === 1) {
             b = 0;
         }
-        Axios.post('http://localhost:3001/updatevisibility', {
+        Axios.post('https://musict-v2.herokuapp.com/updatevisibility', {
             taskID: e.TaskID,
             isPrivate: b
         })

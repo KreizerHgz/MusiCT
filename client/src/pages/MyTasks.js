@@ -13,7 +13,7 @@ export default function MyTasks() {
     const { value } = useContext(UserContext);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchmytasks', {
+        Axios.post('https://musict-v2.herokuapp.com/fetchmytasks', {
             userID: value
         }).then((response) => {
             console.log(response.data);

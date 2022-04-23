@@ -14,7 +14,7 @@ export default function Task() {
     const [succeedes, setSucceedes] = useState(null)
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchtask', {
+        Axios.post('https://musict-v2.herokuapp.com/fetchtask', {
             taskID: path
         }).then((response) => {
             console.log(response.data);

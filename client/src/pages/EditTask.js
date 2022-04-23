@@ -144,7 +144,7 @@ export default function EditTask() {
     }, [submitted, navigate]);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchmytasks', {
+        Axios.post('https://musict-v2.herokuapp.com/fetchmytasks', {
             userID: value
         }).then((response) => {
             if (response.data.message) {
@@ -226,7 +226,7 @@ export default function EditTask() {
     }, [CT])
 
     const save = () => {
-        Axios.post('http://localhost:3001/updatetask', {
+        Axios.post('https://musict-v2.herokuapp.com/updatetask', {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,

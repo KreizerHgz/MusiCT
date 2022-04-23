@@ -7,10 +7,10 @@ app.use(express.json());
 app.use(cors());
 
 const db = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'password',
-    database: 'musict'
+    host: 'eu-cdbr-west-02.cleardb.net',
+    user: 'b27ff19432ec1b',
+    password: 'c9e52434',
+    database: 'heroku_ef57b2865dfc7eb'
 });
 
 app.post('/register', (req, res) => {
@@ -404,7 +404,7 @@ app.post('/updatevisibility', (req, res) => {
     })
 })
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("All good!");
 });
 

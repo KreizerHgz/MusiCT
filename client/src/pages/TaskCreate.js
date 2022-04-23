@@ -117,7 +117,7 @@ export default function TaskCreate() {
     }, [submitted, navigate]);
 
     useEffect(() => {
-        Axios.post('http://localhost:3001/fetchusertasks', {
+        Axios.post('https://musict-v2.herokuapp.com/fetchusertasks', {
             userID: value
         }).then((response) => {
             console.log(response.data);
@@ -136,7 +136,7 @@ export default function TaskCreate() {
     }, [succeedes, preceedes]);
 
     const save = (int) => {
-        Axios.post('http://localhost:3001/submittask', {
+        Axios.post('https://musict-v2.herokuapp.com/submittask', {
             grade: grade,
             learningObjective: learningObjective,
             equipment: equipment,
@@ -157,7 +157,7 @@ export default function TaskCreate() {
     const [open, setOpen] = useState(false);
     const handleClose = () => setOpen(false);
     const handleOpen = (e) => {
-        Axios.post('http://localhost:3001/fetchwikipage', {
+        Axios.post('https://musict-v2.herokuapp.com/fetchwikipage', {
             title: e
         }).then((response) => {
             console.log(response.data);
@@ -178,7 +178,7 @@ export default function TaskCreate() {
     const findTasks = () => {
         handleCloseSearchDialogue();
         if (searchGrade && !searchLO && !searchEquip && !searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 grade: grade
             }).then((response) => {
                 console.log(response.data);
@@ -192,7 +192,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchGrade && !searchLO && searchEquip && !searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 grade: grade,
                 equipment: equipment
             }).then((response) => {
@@ -207,7 +207,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchGrade && !searchLO && !searchEquip && searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 grade: grade,
                 CT: CT
             }).then((response) => {
@@ -222,7 +222,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchGrade && !searchLO && searchEquip && searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 grade: grade,
                 equipment: equipment,
                 CT: CT
@@ -238,7 +238,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchLO && !searchEquip && !searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 learningObjective: learningObjective
             }).then((response) => {
                 console.log(response.data);
@@ -252,7 +252,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchLO && searchEquip && !searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 learningObjective: learningObjective,
                 equipment: equipment
             }).then((response) => {
@@ -267,7 +267,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchLO && !searchEquip && searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 learningObjective: learningObjective,
                 CT: CT
             }).then((response) => {
@@ -282,7 +282,7 @@ export default function TaskCreate() {
             })
         }
         else if (searchLO && searchEquip && searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 learningObjective: learningObjective,
                 equipment: equipment,
                 CT: CT
@@ -298,7 +298,7 @@ export default function TaskCreate() {
             })
         }
         else if (!searchGrade && !searchLO && !searchEquip && searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 CT: CT
             }).then((response) => {
                 console.log(response.data);
@@ -312,7 +312,7 @@ export default function TaskCreate() {
             })
         }
         else if (!searchGrade && !searchLO && searchEquip && !searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 equipment: equipment
             }).then((response) => {
                 console.log(response.data);
@@ -326,7 +326,7 @@ export default function TaskCreate() {
             })
         }
         else if (!searchGrade && !searchLO && searchEquip && searchCT) {
-            Axios.post('http://localhost:3001/fetchsimilartasks', {
+            Axios.post('https://musict-v2.herokuapp.com/fetchsimilartasks', {
                 equipment: equipment,
                 CT: CT
             }).then((response) => {

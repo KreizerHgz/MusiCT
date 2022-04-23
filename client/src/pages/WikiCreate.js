@@ -31,7 +31,7 @@ export default function WikiCreate() {
     }, [submitted, navigate]);
 
     const save = () => {
-        Axios.post('http://localhost:3001/createwikipage', {
+        Axios.post('https://musict-v2.herokuapp.com/createwikipage', {
             title: title,
             description: description
         }).then(setSubmitted(true));
